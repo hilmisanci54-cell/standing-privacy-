@@ -27,9 +27,8 @@ please email us using the address at the bottom.</p>
 
 <h2>The short version</h2>
 <p>Standing has no user accounts and no server of its own. Everything you enter stays on
-your phone. The one exception is the optional AI assistant available to Pro subscribers,
-which sends your question to Google's Gemini service in order to answer it. That exception
-is described in full below.</p>
+your phone. In this version of the app, nothing you type ever leaves your device — there
+is no exception to that sentence.</p>
 
 <h2>What the app stores</h2>
 <p>When you add a payment, the app saves the details you type in:</p>
@@ -60,18 +59,15 @@ device. It is not uploaded anywhere. We cannot see it and we have no way to retr
 The reminder is generated on the phone itself — no payment information leaves the device
 in order to produce it, and no push server is involved.</p>
 
-<h2>The AI assistant (Pro subscribers only)</h2>
-<p>Pro subscribers can ask questions about their payments in plain language. To answer, the
-app sends your question — along with the payment details needed to answer it, such as
-payee names, amounts, and dates — to Google's Gemini API. Google processes that request
-and returns an answer, which the app shows you.</p>
-<p>This means that when, and only when, you use the assistant, some of your payment
-information is transmitted to Google. Google's handling of that data is governed by their
-own terms, available at
-<a href="https://ai.google.dev/gemini-api/terms">ai.google.dev/gemini-api/terms</a>.</p>
-<p>If you would rather no payment information ever leave your device, simply do not use the
-assistant. Every other feature of the app works entirely offline, and the assistant is off
-until you open it.</p>
+<h2>About the AI assistant</h2>
+<p>Earlier descriptions of Standing mentioned an assistant that could answer questions about
+your payments. <strong>That feature is not present in this version of the app.</strong> No
+part of the current release sends your payment information anywhere.</p>
+<p>If we add it in a future version, it will work by sending your question and the relevant
+payment details to an AI service in order to produce an answer — which would mean some of
+your information leaving your device. We will update this page to describe exactly what is
+sent <em>before</em> that version is released, not after, and the app's Data safety entry on
+Google Play will be updated at the same time.</p>
 
 <h2>Subscriptions and payment</h2>
 <p>Standing Pro is sold as a subscription through Google Play. Your payment is handled
@@ -88,10 +84,10 @@ completely removes your data. There is no deletion request to send us, because t
 nothing on our side to delete.</p>
 
 <h2>Security</h2>
-<p>Your data lives in the app's private storage area, which Android prevents other apps
-from reading. Requests to the Gemini API are sent over an encrypted HTTPS connection. No
-system is perfect, but keeping the data on your device rather than on a server removes the
-largest category of risk entirely.</p>
+<p>Your data lives in the app's private storage area, which Android prevents other apps from
+reading. Automatic cloud backup is switched off, so your payment records are not copied to
+Google Drive or anywhere else. No system is perfect, but keeping the data on the device and
+off any server removes the largest category of risk entirely.</p>
 
 <h2>Children</h2>
 <p>Standing is a personal finance tool intended for adults managing their own household
