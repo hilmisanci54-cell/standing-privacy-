@@ -1,0 +1,1827 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Veri Merkezi Turu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --void:#06080D; --ground:#0A0E16; --panel:#101722; --panel2:#151E2B;
+  --line:#22303F; --line2:#2E3E50;
+  --ink:#E7EEF6; --ink2:#A6B6C8; --ink3:#6C7C8F;
+  --cyan:#35C6E8; --cyan-d:#2699B8;
+  --violet:#8B7CF6; --green:#2EA063; --green-l:#3FD07F;
+  --amber:#BE7C12; --amber-l:#F0A62B; --red:#E4555E;
+  --fiber:#F2C744; --aqua:#4FD6C0;
+  --disp:"Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--void); color:var(--ink);
+  font:16px/1.6 var(--body);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:16px; padding-block:28px 56px}
+
+/* ---------- header ---------- */
+.eyebrow{
+  font:600 12px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase;
+  color:var(--cyan-d); margin:0 0 10px;
+}
+h1{
+  font:700 clamp(36px,7vw,64px)/0.95 var(--disp); letter-spacing:.01em;
+  margin:0 0 10px; text-wrap:balance;
+}
+.lede{margin:0 0 22px; max-width:62ch; color:var(--ink2); font-size:17px}
+.lede b{color:var(--ink); font-weight:600}
+
+/* ---------- player ---------- */
+.player{
+  background:var(--panel); border:1px solid var(--line); border-radius:12px;
+  overflow:hidden; box-shadow:0 24px 60px -30px #000;
+}
+.stage{
+  position:relative; width:100%; aspect-ratio:16/9; max-width:100%;
+  background:#02040A; overflow:hidden; cursor:pointer;
+  border-bottom:1px solid var(--line);
+}
+.scene{position:absolute; inset:0; opacity:0; pointer-events:none}
+.scene svg, .scene canvas{position:absolute; inset:0; display:block; width:100%; height:100%}
+
+/* overlays */
+.vig{position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 45%, transparent 38%, #00000090 100%)}
+.scan{position:absolute; inset:0; pointer-events:none; opacity:.35;
+  background:repeating-linear-gradient(to bottom, #ffffff08 0 1px, transparent 1px 3px)}
+
+.hud{position:absolute; inset:0; pointer-events:none; font-family:var(--mono)}
+.tc{
+  position:absolute; top:14px; right:16px; font-size:11px; letter-spacing:.08em;
+  color:#cfe6f0; background:#00000066; border:1px solid #ffffff1f;
+  padding:4px 8px; border-radius:4px; font-variant-numeric:tabular-nums;
+}
+.chip{
+  position:absolute; top:14px; left:16px; display:flex; align-items:center; gap:8px;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#bcd3e0;
+  background:#00000066; border:1px solid #ffffff1f; padding:4px 9px; border-radius:4px;
+}
+.chip i{width:6px; height:6px; border-radius:50%; background:var(--red); display:block;
+  animation:beat 1.6s steps(1,end) infinite}
+@keyframes beat{0%,49%{opacity:1}50%,100%{opacity:.15}}
+
+.l3{position:absolute; left:0; right:0; bottom:0; padding:60px 26px 22px;
+  background:linear-gradient(to top, #030509f0 6%, #03050980 55%, transparent);
+  pointer-events:none}
+.l3 .num{font:500 11px/1 var(--mono); letter-spacing:.22em; color:var(--cyan)}
+.l3 .ttl{font:700 clamp(22px,3.4vw,38px)/1.05 var(--disp); letter-spacing:.01em; margin:8px 0 2px}
+.l3 .sub{font:500 12px/1.3 var(--mono); letter-spacing:.06em; color:var(--ink3);
+  text-transform:uppercase}
+.l3 .cap{margin:10px 0 0; max-width:60ch; font-size:clamp(13px,1.35vw,15.5px); line-height:1.55; color:#d3e0ea}
+
+.bigplay{
+  position:absolute; inset:0; display:grid; place-items:center; border:0; padding:0;
+  background:#02040a66; cursor:pointer; color:var(--ink); font:inherit;
+  backdrop-filter:blur(1px);
+}
+.bigplay span{
+  width:88px; height:88px; border-radius:50%; display:grid; place-items:center;
+  background:#0b1420d9; border:1px solid #ffffff2e; box-shadow:0 0 0 14px #35c6e814;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.bigplay:hover span{transform:scale(1.06); box-shadow:0 0 0 18px #35c6e820}
+.bigplay svg{width:30px; height:30px; margin-left:5px; fill:var(--ink)}
+.bigplay[hidden]{display:none}
+.bigplay em{display:block; margin-top:16px; font:500 11px/1 var(--mono);
+  letter-spacing:.2em; text-transform:uppercase; color:#9fb6c6; font-style:normal}
+
+.endcard{
+  position:absolute; inset:0; display:none; place-items:center; text-align:center;
+  background:#03060cec; padding:24px;
+}
+.endcard.on{display:grid}
+.endcard h2{font:700 clamp(26px,4vw,40px)/1 var(--disp); margin:0 0 18px}
+.endcard .again{
+  font:600 12px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase;
+  background:transparent; color:var(--ink); border:1px solid var(--line2);
+  padding:12px 20px; border-radius:6px; cursor:pointer;
+}
+.endcard .again:hover{border-color:var(--cyan-d); color:var(--cyan)}
+
+/* ---------- controls ---------- */
+.bar{display:flex; align-items:center; gap:12px; padding:12px 14px; flex-wrap:wrap}
+.bar button{
+  background:transparent; border:1px solid var(--line); color:var(--ink2);
+  border-radius:6px; padding:7px 9px; cursor:pointer; display:grid; place-items:center;
+  font:500 11px/1 var(--mono); letter-spacing:.08em; min-height:34px;
+}
+.bar button:hover{border-color:var(--line2); color:var(--ink)}
+.bar button[aria-pressed="true"]{border-color:var(--cyan-d); color:var(--cyan)}
+.bar button svg{width:15px; height:15px; fill:currentColor; display:block}
+.bar .time{font:400 12px/1 var(--mono); color:var(--ink3); font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.bar .time b{color:var(--ink); font-weight:500}
+.track{
+  flex:1 1 220px; min-width:180px; height:34px; position:relative; cursor:pointer;
+  display:grid; align-content:center;
+}
+.track .rail{height:4px; border-radius:2px; background:var(--line); position:relative}
+.track .fill{position:absolute; left:0; top:0; bottom:0; border-radius:2px;
+  background:linear-gradient(90deg,var(--cyan-d),var(--cyan)); width:0}
+.track .knob{
+  position:absolute; top:50%; left:0; width:12px; height:12px; margin:-6px 0 0 -6px;
+  border-radius:50%; background:var(--ink); box-shadow:0 0 0 3px #35c6e833;
+}
+.track .tick{position:absolute; top:-3px; width:1px; height:10px; background:var(--line2)}
+.track:focus-visible{outline:2px solid var(--cyan); outline-offset:3px; border-radius:4px}
+
+/* ---------- chapter rail ---------- */
+.rail{
+  list-style:none; margin:0; padding:0; border-top:1px solid var(--line);
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
+}
+.rail li{border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
+.rail button{
+  width:100%; text-align:left; background:transparent; border:0; cursor:pointer;
+  padding:13px 14px; color:var(--ink2); font:inherit; display:grid; gap:3px;
+  border-left:2px solid transparent;
+}
+.rail button:hover{background:var(--panel2); color:var(--ink)}
+.rail button[aria-current="true"]{border-left-color:var(--cyan); background:#0d1a26; color:var(--ink)}
+.rail .k{font:500 10px/1 var(--mono); letter-spacing:.16em; color:var(--ink3)}
+.rail .t{font:600 15px/1.2 var(--disp); letter-spacing:.02em; font-size:17px}
+.rail button[aria-current="true"] .k{color:var(--cyan-d)}
+
+/* ---------- glossary ---------- */
+.gloss{margin-top:44px}
+.gloss h2{font:700 26px/1.1 var(--disp); margin:0 0 4px}
+.gloss p.note{margin:0 0 20px; color:var(--ink3); font-size:14px}
+.gcards{display:grid; gap:1px; background:var(--line);
+  grid-template-columns:repeat(auto-fit,minmax(232px,1fr)); border:1px solid var(--line);
+  border-radius:10px; overflow:hidden}
+.gcards div{background:var(--panel); padding:15px 16px}
+.gcards dt{font:600 14px/1.3 var(--body); margin:0 0 5px; color:var(--ink)}
+.gcards dt span{font:400 11px/1 var(--mono); color:var(--ink3); margin-left:6px; letter-spacing:.04em}
+.gcards dd{margin:0; font-size:13.5px; line-height:1.55; color:var(--ink2)}
+footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--line);
+  color:var(--ink3); font-size:13px}
+footer code{font:400 12px/1 var(--mono); color:var(--ink2)}
+
+/* ---------- in-scene animation classes ---------- */
+.stage.paused *{animation-play-state:paused !important}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes led{0%,100%{opacity:.25}12%{opacity:1}30%{opacity:.4}55%{opacity:.95}70%{opacity:.3}}
+@keyframes flick{0%,100%{opacity:.35}20%{opacity:1}45%{opacity:.5}62%{opacity:1}80%{opacity:.4}}
+@keyframes beacon{0%,88%{opacity:.08}92%,98%{opacity:1}}
+@keyframes sweep{0%{transform:translateY(0)}100%{transform:translateY(46px)}}
+.fan{animation:spin 1.1s linear infinite; transform-origin:center}
+.fan.slow{animation-duration:2.6s}
+.ledx{animation:led 1.7s steps(1,end) infinite}
+.flick{animation:flick 1.3s steps(1,end) infinite}
+.beacon{animation:beacon 2.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){
+  .fan,.ledx,.flick,.beacon,.chip i{animation:none}
+}
+@media (max-width:560px){
+  .l3{padding:44px 16px 16px}
+  .l3 .cap{display:none}
+  .bar{gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Sanal tur · 10 bölüm · 1 dosya</p>
+  <h1>Veri Merkezi Turu</h1>
+  <p class="lede">Dış kapıdan başlayıp kabinin içine, ağ omurgasına, soğutma tesisatına ve
+  jeneratörlere kadar bir veri merkezinin <b>içindeki her şeyi</b> sırayla gezen, video gibi
+  oynayan bir sayfa. Oynat'a basın; bölümler kendiliğinden akar, aşağıdaki listeden istediğiniz
+  yere atlayabilirsiniz.</p>
+
+  <div class="player" id="player">
+    <div class="stage paused" id="stage">
+      <div class="scene" id="sc-ext"></div>
+      <div class="scene" id="sc-sec"></div>
+      <div class="scene" id="sc-aisle"></div>
+      <div class="scene" id="sc-rack"></div>
+      <div class="scene" id="sc-net"></div>
+      <div class="scene" id="sc-stor"></div>
+      <div class="scene" id="sc-cool"></div>
+      <div class="scene" id="sc-pwr"></div>
+      <div class="scene" id="sc-noc"></div>
+      <div class="scene" id="sc-out"></div>
+
+      <div class="scan"></div>
+      <div class="vig"></div>
+
+      <div class="hud">
+        <div class="chip"><i></i><span id="chipTxt">Böl. 01</span></div>
+        <div class="tc" id="tc">00:00 / 01:55</div>
+        <div class="l3">
+          <div class="num" id="l3num">01</div>
+          <div class="ttl" id="l3ttl">Tesis</div>
+          <div class="sub" id="l3sub">DC-01</div>
+          <p class="cap" id="l3cap"></p>
+        </div>
+      </div>
+
+      <button class="bigplay" id="bigplay" aria-label="Turu oynat">
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+        <em>Turu başlat</em>
+      </button>
+
+      <div class="endcard" id="endcard">
+        <div>
+          <h2>Tur tamamlandı</h2>
+          <button class="again" id="again">Baştan oynat</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bar">
+      <button id="play" aria-label="Oynat / duraklat">
+        <svg id="playIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button id="back" aria-label="5 saniye geri">−5s</button>
+      <button id="fwd" aria-label="5 saniye ileri">+5s</button>
+      <div class="track" id="track" role="slider" tabindex="0" aria-label="Zaman çizgisi"
+           aria-valuemin="0" aria-valuenow="0" aria-valuetext="00:00">
+        <div class="rail" id="rail">
+          <div class="fill" id="fill"></div>
+          <div class="knob" id="knob"></div>
+        </div>
+      </div>
+      <div class="time"><b id="tNow">00:00</b> / <span id="tAll">01:55</span></div>
+      <button id="rate" aria-label="Oynatma hızı">1×</button>
+      <button id="sound" aria-pressed="false" aria-label="Salon sesi">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/></svg>
+      </button>
+      <button id="fs" aria-label="Tam ekran">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5v2H6v3H4zm11-5h5v5h-2V6h-3V4zM4 15h2v3h3v2H4v-5zm14 0h2v5h-5v-2h3v-3z"/></svg>
+      </button>
+    </div>
+
+    <ul class="rail" id="railList"></ul>
+  </div>
+
+  <section class="gloss">
+    <h2>Turda geçen her şey</h2>
+    <p class="note">Ekranda gördüğünüz parçaların ne işe yaradığı, gerçek birimleriyle.</p>
+    <dl class="gcards">
+      <div><dt>Kabin <span>rack · 42U</span></dt><dd>Cihazların dikey olarak vidalandığı çelik dolap. Yükseklik “U” ile ölçülür; 1U = 44,45 mm. Tipik bir kabin 42U ve 8–15 kW çeker.</dd></div>
+      <div><dt>Kör panel <span>blanking</span></dt><dd>Boş U'ları kapatan sac plaka. Soğuk havanın kabinin içinden sızıp sıcak tarafa kaçmasını engeller; en ucuz soğutma iyileştirmesi.</dd></div>
+      <div><dt>ToR anahtar <span>top-of-rack</span></dt><dd>Kabinin tepesindeki ağ anahtarı. Sunucular buraya bakır/fiber ile bağlanır, anahtar da omurgaya 100 GbE ile çıkar. Her kabinde iki tane olur.</dd></div>
+      <div><dt>Patch panel</dt><dd>Kablo sonlandırma paneli. Kabin dışına giden fiberler burada LC uçlara döner; cihaz değiştirmek için kablo tesisatına dokunmak gerekmez.</dd></div>
+      <div><dt>PDU <span>A + B</span></dt><dd>Kabin içi güç dağıtım çubuğu. İki ayrı besleme hattı (A ve B) iki ayrı PDU'ya gider; bir hat kesilse cihazlar ikinci beslemeden çalışır.</dd></div>
+      <div><dt>Soğuk / sıcak koridor</dt><dd>Kabinler yüz yüze dizilir: aradaki koridora 18–22 °C hava verilir, arkaya atılan 33–38 °C hava ayrı koridorda toplanır. İkisinin karışmaması esastır.</dd></div>
+      <div><dt>Yükseltilmiş döşeme <span>600 mm</span></dt><dd>Asıl betonun üstündeki kaldırılabilir panel zemin. Altındaki boşluk soğuk hava kanalı ve kablo yolu olarak kullanılır; delikli paneller havayı koridora bırakır.</dd></div>
+      <div><dt>Koridor kapatma <span>containment</span></dt><dd>Koridorun üstünü ve uçlarını kapatan panel ve kapılar. Soğuk hava sadece cihazlara gider, bu da fan ve chiller enerjisini düşürür.</dd></div>
+      <div><dt>CRAH</dt><dd>Salon içi klima santrali. Soğuk suyla beslenen bir serpantinden havayı geçirir, fanla döşeme altına basar. Sıcak hava tavandan geri döner.</dd></div>
+      <div><dt>Chiller</dt><dd>Soğuk su üreten makine, genelde çatıda. Salondan aldığı ısıyı dışarıya atar; hava yeterince soğuksa chiller kapatılıp serbest soğutma yapılır.</dd></div>
+      <div><dt>UPS <span>kesintisiz güç</span></dt><dd>Akü grubu ve çevirici. Şebeke gidince 10 ms’nin altında devralır ve yükü jeneratör devreye girene kadar, tipik 5–10 dakika taşır.</dd></div>
+      <div><dt>ATS</dt><dd>Otomatik transfer şalteri. Beslemenin şebekeden jeneratöre, dönünce tekrar şebekeye geçmesini kendi başına yapar.</dd></div>
+      <div><dt>Jeneratör</dt><dd>Dizel motor + alternatör. Şebeke kesintisinde 10–15 saniyede yüke hazır olur; sahadaki yakıt tankı tipik 24–72 saat çalıştırır.</dd></div>
+      <div><dt>Spine-leaf</dt><dd>İki katmanlı ağ omurgası. Her leaf her spine'a bağlıdır, böylece iki kabin arası yol uzunluğu her zaman aynıdır ve tek cihaz arızası trafiği kesmez.</dd></div>
+      <div><dt>Silme kodlaması <span>erasure coding</span></dt><dd>Veriyi n parça + k eşlik parçasına bölüp farklı düğümlere yazma. 6+2'de iki parça tamamen kaybolsa da veri geri kurulur; yedeklemeden az yer harcar.</dd></div>
+      <div><dt>Teyp kütüphanesi <span>LTO-9</span></dt><dd>Robot kollu kaset arşivi. Kaset başına 18 TB sıkıştırmasız; erişim yavaş ama uzun süreli, çevrimdışı saklama için en ucuz katman.</dd></div>
+      <div><dt>Mantrap</dt><dd>Arka arkaya iki kilitli kapıdan oluşan giriş. İkisi asla aynı anda açılmaz; kart + biyometrik doğrulama ile birlikte kapının arkasına tek kişi geçer.</dd></div>
+      <div><dt>Temiz gazlı söndürme</dt><dd>Sulu sistem yerine odadaki oksijeni bastıran gaz (ör. Novec, IG-55). Elektroniğe ve veriye zarar vermeden yangını söndürür.</dd></div>
+      <div><dt>PUE <span>1,0 = ideal</span></dt><dd>Tesisin toplam tükettiği enerjinin, yalnızca cihazların tükettiğine oranı. 1,28 demek: her 1 W bilişim için 0,28 W soğutma, kayıp ve aydınlatma.</dd></div>
+      <div><dt>N+1 ve 2N</dt><dd>Yedeklilik düzeyi. N+1 = ihtiyaç kadar cihaz artı bir yedek (soğutma böyle kurulur). 2N = her şeyin tam ikinci kopyası (güç yolu böyle kurulur).</dd></div>
+    </dl>
+  </section>
+
+  <footer>
+    Tek dosyalık, bağımsız bir sayfa: tüm sahneler SVG ve canvas ile tarayıcıda çiziliyor,
+    video dosyası yok. Sayılar tipik bir <code>2 MW · Tier III</code> eş yerleşim tesisinden
+    alınmış örnek değerlerdir. Klavye: <code>boşluk</code> oynat/durdur,
+    <code>← →</code> 5 saniye, <code>N P</code> bölüm atla.
+  </footer>
+</div>
+
+<script>
+/* =========================================================================
+   Veri Merkezi Turu — zaman çizgisi motoru + 10 sahne
+   ========================================================================= */
+const NS = 'http://www.w3.org/2000/svg';
+const clamp = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v;
+const lerp  = (a, b, t) => a + (b - a) * t;
+const eOut  = t => 1 - Math.pow(1 - t, 3);
+const eIO   = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+const rnd   = n => { const x = Math.sin(n * 127.1 + 4.7) * 43758.5453; return x - Math.floor(x); };
+const wob   = (i, s) => Math.sin(i * .7 + s) * .5 + Math.sin(i * 1.9 + s * 2.3) * .3 + Math.sin(i * 4.1 + s * 5.1) * .2;
+const mmss  = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+
+const C = {
+  cyan:'#35C6E8', cyanD:'#2699B8', violet:'#8B7CF6', green:'#2EA063', greenL:'#3FD07F',
+  amber:'#BE7C12', amberL:'#F0A62B', red:'#E4555E', fiber:'#F2C744', aqua:'#4FD6C0',
+  panel:'#101722', panel2:'#151E2B', line:'#22303F', line2:'#2E3E50',
+  ink:'#E7EEF6', ink2:'#A6B6C8', ink3:'#6C7C8F', steel:'#1B2430', dark:'#0A0E16'
+};
+
+const CH = [
+  { id:'ext',   d: 9, t:'Tesis',              sub:'DC-01 · Tier III eş yerleşim',
+    cap:'Penceresiz bir kutu. Çatıda soğutma grupları, yanda trafo sahası ve dizel jeneratörler, çevrede çift çit. İçeride 168 kabin ve 2 MW bilişim yükü var.' },
+  { id:'sec',   d: 9, t:'Giriş ve güvenlik',  sub:'Mantrap · kart + biyometri',
+    cap:'Arka arkaya iki kilitli kapı. Kart okutulur, avuç içi doğrulanır, ilk kapı kapanmadan ikincisi açılmaz. Her geçiş kamerayla kaydedilir.' },
+  { id:'aisle', d:15, t:'Soğuk koridor',      sub:'Salon A · 18–22 °C · sıra A1–A12',
+    cap:'Kabinler yüz yüze dizilmiş. Yükseltilmiş döşemenin altından gelen soğuk hava, üstü kapatılmış bu koridordan sunucuların önüne giriyor.' },
+  { id:'rack',  d:13, t:'Kabinin içi',        sub:'42U · 12,4 kW · A+B besleme',
+    cap:'Tepede iki ağ anahtarı ve patch panel, altında sunucular, GPU düğümleri, kör paneller ve iki yanda birer güç dağıtım çubuğu.' },
+  { id:'net',   d:11, t:'Ağ',                 sub:'Çift ISP · spine-leaf · 1,6 Tbps',
+    cap:'İki bağımsız internet sağlayıcısı, kenar yönlendiriciler ve güvenlik duvarından sonra spine-leaf omurga. Her kabine iki ayrı yol çıkıyor.' },
+  { id:'stor',  d:11, t:'Depolama',           sub:'NVMe · disk · teyp arşivi',
+    cap:'Sıcak veri NVMe’de, büyük hacim disk raflarında silme kodlamasıyla parçalanmış, arşiv ise robot kollu teyp kütüphanesinde.' },
+  { id:'cool',  d:12, t:'Soğutma',            sub:'CRAH N+1 · ΔT 15 K · PUE 1,28',
+    cap:'CRAH üniteleri soğuk suyla havayı soğutup döşeme altına basıyor. Cihazların arkasından çıkan sıcak hava tavandan geri dönüyor, ısı çatıdan atılıyor.' },
+  { id:'pwr',   d:14, t:'Güç ve yedeklilik',  sub:'Şebeke → UPS → jeneratör · 2N',
+    cap:'Şimdi şebekeyi keselim: aküler 10 ms’nin altında devralıyor, jeneratör çalışıp ATS beslemeyi ona aktarıyor. Kabinlerdeki cihazlar hiç fark etmiyor.' },
+  { id:'noc',   d:10, t:'İzleme merkezi',     sub:'7/24 · sıcaklık, güç, trafik, alarm',
+    cap:'Bütün tesis tek duvarda: koridor sıcaklığı, kabin başına güç, ağ trafiği, PUE ve açık alarmlar. Eşik aşılırsa nöbetçi ekibe düşer.' },
+  { id:'out',   d:11, t:'Geri çekiliş',       sub:'2.400 m² · 6 salon · 2 MW',
+    cap:'Hepsi bir arada: BT salonları, UPS odası, jeneratör sahası, soğutma tesisatı, güvenlikli giriş ve depo.' }
+];
+let acc = 0; for (const c of CH) { c.t0 = acc; acc += c.d; }
+const DUR = acc;
+const FADE = .8;
+
+/* ---------- ortak yardımcılar ---------- */
+const sx = document.createElement('style');
+sx.textContent = `
+svg text{font-kerning:normal}
+.lb{font:500 13.5px var(--mono); fill:#A6B6C8; letter-spacing:.05em}
+.lbs{font:400 11.5px var(--mono); fill:#6C7C8F; letter-spacing:.04em}
+.lbi{font:500 13.5px var(--mono); fill:#35C6E8; letter-spacing:.05em}
+.hd{font:700 26px var(--disp); fill:#E7EEF6; letter-spacing:.02em}
+.tg{font:500 10.5px var(--mono); fill:#6C7C8F; letter-spacing:.17em; text-transform:uppercase}
+.big{font:700 38px var(--disp); fill:#E7EEF6}
+.dg{font:500 15px var(--mono); fill:#E7EEF6; font-variant-numeric:tabular-nums}
+`;
+document.head.appendChild(sx);
+
+const svgWrap = inner => `<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${inner}</svg>`;
+const camSet = (g, z, dx = 0, dy = 0) =>
+  g.setAttribute('transform', `translate(${(800 + dx).toFixed(2)} ${(450 + dy).toFixed(2)}) scale(${z.toFixed(4)}) translate(-800 -450)`);
+
+function cueRig(root){
+  const list = [...root.querySelectorAll('[data-at]')].map(e => ({
+    e, at:+e.dataset.at, dx: e.dataset.dx !== undefined ? +e.dataset.dx : -12
+  }));
+  return p => { for (const c of list){
+    const k = eOut(clamp((p - c.at) / .10));
+    c.e.setAttribute('opacity', k.toFixed(3));
+    c.e.setAttribute('transform', `translate(${((1 - k) * c.dx).toFixed(2)} 0)`);
+  }};
+}
+
+/* açıklama balonu: nesne üstünde nokta + kılavuz çizgi + etiket */
+function callout(x, y, text, sub, at, opt = {}){
+  const side = opt.side || 'left', len = opt.len ?? 70, L = side === 'left';
+  const tx = L ? x - len : x + len, ax = L ? tx - 9 : tx + 9;
+  return `<g data-at="${at}" data-dx="${opt.dx ?? (L ? -12 : 12)}" opacity="0">
+    <circle cx="${x}" cy="${y}" r="3" fill="${C.cyan}"/>
+    <circle cx="${x}" cy="${y}" r="8" fill="none" stroke="${C.cyan}" stroke-opacity=".35"/>
+    <line x1="${L ? x - 9 : x + 9}" y1="${y}" x2="${tx}" y2="${y}" stroke="${C.line2}" stroke-width="1"/>
+    <text class="lb" x="${ax}" y="${y + 4}" text-anchor="${L ? 'end' : 'start'}">${text}</text>
+    ${sub ? `<text class="lbs" x="${ax}" y="${y + 21}" text-anchor="${L ? 'end' : 'start'}">${sub}</text>` : ''}
+  </g>`;
+}
+
+/* dönen fan */
+function fanG(cx, cy, r, slow){
+  let b = '';
+  for (let i = 0; i < 5; i++) b += `<path transform="rotate(${i * 72})" fill="#233140"
+     d="M0 0 L${(r * .92).toFixed(1)} ${(-r * .30).toFixed(1)} A${r} ${r} 0 0 1 ${(r * .55).toFixed(1)} ${(r * .68).toFixed(1)} Z"/>`;
+  return `<g transform="translate(${cx} ${cy})">
+    <circle r="${r + 3}" fill="#0B1118" stroke="#1B2534"/>
+    <g class="fan${slow ? ' slow' : ''}" style="transform-box:fill-box">
+      <circle r="${r}" fill="none"/>${b}<circle r="${r * .2}" fill="#101923"/>
+    </g></g>`;
+}
+
+/* ================= 1. TESİS (dış) ================= */
+function buildExt(root){
+  let stars = '';
+  for (let i = 0; i < 110; i++){
+    const x = rnd(i * 3.1) * 1600, y = rnd(i * 7.7) * 430, r = .5 + rnd(i * 11.3) * 1.1;
+    stars += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#cfe2f0" opacity="${(.15 + rnd(i * 5.5) * .6).toFixed(2)}"/>`;
+  }
+  let ribs = '';
+  for (let x = 282; x < 1226; x += 24) ribs += `<line x1="${x}" y1="478" x2="${x}" y2="702" stroke="#182230"/>`;
+  let louv = '';
+  for (const lx of [330, 520, 710]){
+    louv += `<rect x="${lx}" y="596" width="104" height="52" fill="#0B1118" stroke="#1A2432"/>`;
+    for (let i = 1; i < 7; i++) louv += `<line x1="${lx + 3}" y1="${596 + i * 7}" x2="${lx + 101}" y2="${596 + i * 7}" stroke="#1C2734"/>`;
+  }
+  let chill = '';
+  for (const cx of [318, 508, 698, 888]){
+    chill += `<g><rect x="${cx}" y="414" width="148" height="50" rx="2" fill="#0E1620" stroke="#1E2A38"/>
+      <rect x="${cx}" y="414" width="148" height="5" fill="#16202C"/>
+      ${fanG(cx + 40, 432, 15)}${fanG(cx + 106, 432, 15)}</g>`;
+  }
+  let pipes = '';
+  for (let i = 0; i < 2; i++) pipes += `<line x1="300" y1="${470 + i * 5}" x2="1210" y2="${470 + i * 5}" stroke="#182230" stroke-width="3"/>`;
+  let posts = '';
+  for (let x = 30; x < 1600; x += 76) posts += `<line x1="${x}" y1="742" x2="${x}" y2="812" stroke="#1B2533" stroke-width="3"/>`;
+  let park = '';
+  for (let i = 0; i < 6; i++) park += `<line x1="${1380 + i * 34}" y1="828" x2="${1372 + i * 34}" y2="860" stroke="#111924" stroke-width="2"/>`;
+
+  root.innerHTML = svgWrap(`
+  <defs>
+    <linearGradient id="exSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#04060C"/><stop offset=".62" stop-color="#0A1420"/>
+      <stop offset="1" stop-color="#14212E"/></linearGradient>
+    <linearGradient id="exGnd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E141C"/><stop offset="1" stop-color="#070A10"/></linearGradient>
+    <radialGradient id="exGlow"><stop offset="0" stop-color="#35C6E8" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#35C6E8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="exWarm"><stop offset="0" stop-color="#F0A62B" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#F0A62B" stop-opacity="0"/></radialGradient>
+    <linearGradient id="exCone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe2f0" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#cfe2f0" stop-opacity="0"/></linearGradient>
+    <pattern id="exMesh" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M0 10 L10 0 M-2 2 L2 -2 M8 12 L12 8" stroke="#1C2836" stroke-width="1"/></pattern>
+  </defs>
+
+  <g id="exCam">
+    <rect width="1600" height="580" fill="url(#exSky)"/>
+    <g id="exStars">${stars}</g>
+    <ellipse cx="240" cy="470" rx="420" ry="110" fill="#35C6E8" opacity=".05"/>
+    <ellipse cx="1300" cy="500" rx="480" ry="90" fill="#F0A62B" opacity=".035"/>
+    <rect y="560" width="1600" height="340" fill="url(#exGnd)"/>
+    <line x1="0" y1="560" x2="1600" y2="560" stroke="#121B26"/>
+
+    <!-- yan bina: elektrik odaları -->
+    <rect x="1226" y="524" width="186" height="178" fill="#101924" stroke="#1D2836"/>
+    <rect x="1226" y="524" width="186" height="6" fill="#16202C"/>
+    <rect x="1252" y="620" width="40" height="30" fill="#0A1017" stroke="#1A2432"/>
+    <text class="lbs" x="1319" y="596" text-anchor="middle" font-size="10">ELEKTRİK</text>
+
+    <!-- ana blok -->
+    <rect x="272" y="472" width="956" height="230" fill="#131C27"/>
+    ${ribs}
+    <rect x="266" y="462" width="968" height="12" fill="#22303F"/>
+    <rect x="272" y="472" width="956" height="230" fill="none" stroke="#17212D"/>
+    ${louv}
+    <!-- yükleme rampası -->
+    <rect x="940" y="612" width="96" height="90" fill="#0A1017" stroke="#1A2432"/>
+    <line x1="940" y1="640" x2="1036" y2="640" stroke="#1A2432"/>
+    <!-- giriş -->
+    <ellipse cx="1120" cy="700" rx="90" ry="40" fill="url(#exWarm)"/>
+    <rect x="1084" y="616" width="72" height="86" fill="#141C26" stroke="#25323F"/>
+    <rect x="1088" y="620" width="64" height="58" fill="#F0A62B" opacity=".22"/>
+    <rect x="1084" y="606" width="72" height="7" rx="1" fill="#F0A62B" opacity=".5"/>
+    <!-- tabela -->
+    <rect x="286" y="494" width="150" height="40" rx="2" fill="#0A1017" stroke="#233140"/>
+    <text x="361" y="521" text-anchor="middle" font="700 22px var(--disp)" fill="#35C6E8"
+      style="font:700 22px var(--disp); letter-spacing:.14em">DC-01</text>
+    <!-- çatı üstü -->
+    ${pipes}${chill}
+    <!-- kuru soğutucu -->
+    <g><rect x="1040" y="408" width="170" height="56" rx="2" fill="#0C141D" stroke="#1E2A38"/>
+      ${fanG(1078, 436, 17, 1)}${fanG(1125, 436, 17, 1)}${fanG(1172, 436, 17, 1)}</g>
+
+    <!-- direk + uçuş uyarı lambası -->
+    <line x1="1218" y1="702" x2="1218" y2="336" stroke="#161F2B" stroke-width="4"/>
+    <circle class="beacon" cx="1218" cy="330" r="7" fill="#E4555E"/>
+    <circle cx="1218" cy="330" r="16" fill="#E4555E" opacity=".12"/>
+
+    <!-- jeneratör sahası (sol) -->
+    <g>
+      <rect x="44" y="612" width="118" height="90" rx="2" fill="#111A24" stroke="#26333F"/>
+      <rect x="168" y="612" width="118" height="90" rx="2" fill="#111A24" stroke="#26333F"/>
+      <rect x="66" y="540" width="11" height="74" fill="#141D28"/><rect x="190" y="540" width="11" height="74" fill="#141D28"/>
+      <rect x="44" y="636" width="118" height="3" fill="#18222E"/><rect x="168" y="636" width="118" height="3" fill="#18222E"/>
+      <ellipse cx="300" cy="676" rx="26" ry="9" fill="#0D141C" stroke="#1C2635"/>
+      <rect x="274" y="640" width="52" height="36" fill="#0D141C" stroke="#1C2635"/>
+      <text class="lbs" x="165" y="726" text-anchor="middle" font-size="10">JENERATÖR + YAKIT</text>
+    </g>
+
+    <!-- trafo sahası (sağ) -->
+    <g>
+      <rect x="1432" y="620" width="74" height="70" fill="#111A24" stroke="#26333F"/>
+      <rect x="1518" y="620" width="74" height="70" fill="#111A24" stroke="#26333F"/>
+      ${[1446, 1466, 1486, 1532, 1552, 1572].map(x => `<rect x="${x}" y="606" width="6" height="16" fill="#233140"/>`).join('')}
+      <path d="M1470 606 L1470 470 M1440 500 L1500 500 M1448 470 L1492 470" stroke="#18222E" stroke-width="3" fill="none"/>
+      <path d="M1500 492 L1600 470 M1500 508 L1600 486" stroke="#16202B" stroke-width="2"/>
+      <text class="lbs" x="1512" y="716" text-anchor="middle" font-size="10">TRAFO 2×2 MVA</text>
+    </g>
+
+    <!-- aydınlatma konileri -->
+    <path d="M520 700 L470 900 L740 900 L690 700 Z" fill="url(#exCone)"/>
+    <path d="M1120 700 L1060 900 L1340 900 L1280 700 Z" fill="url(#exCone)"/>
+    <circle cx="520" cy="700" r="4" fill="#dfeaf2" opacity=".7"/>
+    <circle cx="1120" cy="700" r="4" fill="#dfeaf2" opacity=".7"/>
+    ${park}
+    <!-- çift çit -->
+    <rect y="742" width="1600" height="70" fill="url(#exMesh)" opacity=".85"/>
+    ${posts}
+    <line x1="0" y1="742" x2="1600" y2="742" stroke="#1B2532" stroke-width="2"/>
+    <line x1="0" y1="812" x2="1600" y2="812" stroke="#141D28" stroke-width="2"/>
+  </g>
+
+  ${callout(600, 560, 'PENCERESİZ KABUK', 'yangın bölmeli betonarme', .16, { side:'right', len:110 })}
+  ${callout(592, 432, 'ÇATI: SOĞUTMA GRUPLARI', '4 × chiller · N+1', .32, { side:'right', len:150 })}
+  ${callout(1470, 640, 'TRAFO SAHASI', 'iki bağımsız orta gerilim hattı', .48, { side:'left', len:110 })}
+  ${callout(165, 655, 'DİZEL JENERATÖR', '2 × 1,8 MVA · 48 saat yakıt', .62, { side:'right', len:120 })}
+  ${callout(940, 776, 'ÇİFT ÇİT VE KAMERA HATTI', 'plaka okuma · devriye', .76, { side:'right', len:90 })}
+  <g data-at="0.04" data-dx="0" opacity="0">
+    <text class="tg" x="1540" y="120" text-anchor="end">DIŞ SICAKLIK</text>
+    <text class="dg" x="1540" y="150" text-anchor="end" font-size="26">6,4 °C</text>
+    <text class="tg" x="1540" y="186" text-anchor="end">BİLİŞİM YÜKÜ</text>
+    <text class="dg" x="1540" y="216" text-anchor="end" font-size="26">1,86 MW</text>
+  </g>`);
+
+  const cam = root.querySelector('#exCam'), cue = cueRig(root);
+  return (p) => { const k = eIO(clamp(p)); camSet(cam, lerp(1, 1.13, k), lerp(0, 26, k), lerp(0, -16, k)); cue(p); };
+}
+
+/* ================= 2. GİRİŞ VE GÜVENLİK ================= */
+function buildSec(root){
+  let seams = '';
+  for (let x = 40; x < 1600; x += 80) seams += `<line x1="${x}" y1="60" x2="${x}" y2="720" stroke="#0E151E"/>`;
+  let silo = '';
+  for (let i = 0; i < 7; i++){
+    const x = 646 + i * 44;
+    silo += `<rect x="${x}" y="${300 + (i % 2) * 8}" width="30" height="${320 - (i % 2) * 8}" fill="#0B1620" opacity=".9"/>`;
+    for (let j = 0; j < 9; j++) silo += `<rect x="${x + 4}" y="${316 + j * 34}" width="3" height="4" fill="#3FD07F" opacity="${(.3 + rnd(i * 9 + j) * .7).toFixed(2)}"/>`;
+  }
+  root.innerHTML = svgWrap(`
+  <defs>
+    <linearGradient id="seFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101922"/><stop offset="1" stop-color="#070A10"/></linearGradient>
+    <linearGradient id="seHall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0D2534"/><stop offset="1" stop-color="#061219"/></linearGradient>
+    <radialGradient id="seSpill"><stop offset="0" stop-color="#35C6E8" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#35C6E8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="seGlass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8FC6DC" stop-opacity=".16"/>
+      <stop offset=".5" stop-color="#8FC6DC" stop-opacity=".05"/>
+      <stop offset="1" stop-color="#8FC6DC" stop-opacity=".13"/></linearGradient>
+  </defs>
+  <g id="seCam">
+    <rect width="1600" height="900" fill="#0A1017"/>
+    <rect width="1600" height="720" fill="#0C131C"/>${seams}
+    <rect y="720" width="1600" height="180" fill="url(#seFloor)"/>
+    <line x1="0" y1="720" x2="1600" y2="720" stroke="#18222E"/>
+
+    <!-- koridor derinliği -->
+    <rect x="470" y="150" width="660" height="570" fill="#080D14"/>
+    <path d="M470 150 L560 232 L1040 232 L1130 150 Z" fill="#0A1119"/>
+    <path d="M470 720 L560 640 L1040 640 L1130 720 Z" fill="#0B121A"/>
+    <path d="M470 150 L560 232 L560 640 L470 720 Z" fill="#0A0F17"/>
+    <path d="M1130 150 L1040 232 L1040 640 L1130 720 Z" fill="#0A0F17"/>
+
+    <!-- salon kapısı ardındaki mavi ışık -->
+    <g id="seHallGlow" opacity="0">
+      <rect x="600" y="270" width="400" height="360" fill="url(#seHall)"/>
+      ${silo}
+      <ellipse cx="800" cy="640" rx="330" ry="80" fill="url(#seSpill)"/>
+    </g>
+
+    <!-- 2. kapı (içteki) -->
+    <g>
+      <rect x="592" y="262" width="416" height="376" fill="none" stroke="#22303F" stroke-width="3"/>
+      <g id="seD2a"><rect x="594" y="264" width="206" height="372" fill="url(#seGlass)" stroke="#2A3A4A"/>
+        <line x1="782" y1="430" x2="782" y2="470" stroke="#93b3c4" stroke-width="3"/></g>
+      <g id="seD2b"><rect x="800" y="264" width="206" height="372" fill="url(#seGlass)" stroke="#2A3A4A"/>
+        <line x1="818" y1="430" x2="818" y2="470" stroke="#93b3c4" stroke-width="3"/></g>
+      <text class="lbs" x="800" y="246" text-anchor="middle">KAPI 2 · SALON A</text>
+    </g>
+
+    <!-- 1. kapı (dıştaki) -->
+    <g>
+      <rect x="452" y="136" width="700" height="590" fill="none" stroke="#25323F" stroke-width="4"/>
+      <rect x="452" y="126" width="700" height="14" fill="#18222E"/>
+      <g id="seD1a"><rect x="456" y="140" width="346" height="584" fill="url(#seGlass)" stroke="#2E3E50" stroke-width="2"/>
+        <line x1="780" y1="400" x2="780" y2="450" stroke="#a9c6d6" stroke-width="4"/>
+        <rect x="470" y="150" width="318" height="120" fill="#8FC6DC" opacity=".03"/></g>
+      <g id="seD1b"><rect x="802" y="140" width="346" height="584" fill="url(#seGlass)" stroke="#2E3E50" stroke-width="2"/>
+        <line x1="824" y1="400" x2="824" y2="450" stroke="#a9c6d6" stroke-width="4"/>
+        <rect x="816" y="150" width="318" height="120" fill="#8FC6DC" opacity=".03"/></g>
+    </g>
+
+    <!-- kart okuyucu (sağ duvar) -->
+    <g>
+      <rect x="1214" y="388" width="86" height="126" rx="5" fill="#0E1620" stroke="#26333F"/>
+      <rect x="1226" y="404" width="62" height="42" rx="3" fill="#060A0F" stroke="#1E2A36"/>
+      <circle id="seLed" cx="1257" cy="480" r="9" fill="#E4555E"/>
+      <circle cx="1257" cy="480" r="16" fill="none" stroke="#E4555E" stroke-opacity=".25" id="seLedR"/>
+      <text class="lbs" x="1257" y="538" text-anchor="middle" font-size="10">KART OKUYUCU</text>
+      <g id="seCard"><rect x="1360" y="452" width="58" height="38" rx="4" fill="#16202C" stroke="#35C6E8" stroke-opacity=".5"/>
+        <rect x="1368" y="462" width="20" height="14" rx="2" fill="#F2C744" opacity=".8"/></g>
+    </g>
+
+    <!-- biyometrik okuyucu (sol duvar) -->
+    <g>
+      <rect x="300" y="386" width="104" height="128" rx="5" fill="#0E1620" stroke="#26333F"/>
+      <rect x="312" y="398" width="80" height="86" rx="3" fill="#050A0F" stroke="#1E2A36"/>
+      <path d="M338 470 L338 436 M352 470 L352 424 M366 470 L366 430 M326 470 L326 444"
+        stroke="#35C6E8" stroke-opacity=".45" stroke-width="4" stroke-linecap="round"/>
+      <rect id="seScan" x="312" y="400" width="80" height="3" fill="#35C6E8" opacity=".85"/>
+      <circle id="seBio" cx="352" cy="498" r="6" fill="#6C7C8F"/>
+      <text class="lbs" x="352" y="538" text-anchor="middle" font-size="10">AVUÇ İÇİ</text>
+    </g>
+
+    <!-- kubbe kamera -->
+    <g><path d="M770 62 L830 62 L830 78 L770 78 Z" fill="#18222E"/>
+      <path d="M772 78 A28 22 0 0 0 828 78 Z" fill="#0A0F16" stroke="#26333F"/>
+      <circle class="beacon" cx="800" cy="84" r="3" fill="#E4555E"/></g>
+
+    <!-- zemin işaretleri + turnike -->
+    <path d="M700 838 L900 838" stroke="#F0A62B" stroke-width="3" stroke-dasharray="14 12" opacity=".35"/>
+    <text class="lbs" x="800" y="872" text-anchor="middle" font-size="10">TEK KİŞİ · TEK GEÇİŞ</text>
+  </g>
+
+  <g data-at="0.05" data-dx="0" opacity="0">
+    <text class="tg" x="60" y="110">BÖLÜM 02 · ERİŞİM KONTROLÜ</text>
+    <text class="hd" x="60" y="146">İki kapı, tek kişi</text>
+  </g>
+  ${callout(1257, 480, 'KART + PIN', 'yetki kaydı 90 gün saklanır', .2, { side:'left', len:80 })}
+  ${callout(352, 440, 'BİYOMETRİK DOĞRULAMA', 'damar deseni · kart kopyalanamaz', .44, { side:'right', len:80 })}
+  ${callout(800, 84, 'KAMERA', 'her geçiş kayıt altında', .58, { side:'right', len:180 })}
+  <g data-at="0.7" data-dx="0" opacity="0">
+    <text class="lbi" x="800" y="800" text-anchor="middle">KAPI 1 KAPANDI → KAPI 2 AÇILIYOR</text>
+    <text class="lbs" x="800" y="822" text-anchor="middle">iki kapı asla aynı anda açık değildir</text>
+  </g>`);
+
+  const q = s => root.querySelector(s);
+  const cam = q('#seCam'), d1a = q('#seD1a'), d1b = q('#seD1b'), d2a = q('#seD2a'), d2b = q('#seD2b');
+  const led = q('#seLed'), ledR = q('#seLedR'), card = q('#seCard'), scan = q('#seScan'),
+        bio = q('#seBio'), glow = q('#seHallGlow');
+  const cue = cueRig(root);
+
+  return (p, t) => {
+    camSet(cam, lerp(1.02, 1.26, eIO(clamp(p))), 0, lerp(0, -8, p));
+    /* kart okuyucuya yaklaşır, LED yeşile döner */
+    const cp = eOut(clamp((p - .08) / .14));
+    card.setAttribute('transform', `translate(${(-cp * 96).toFixed(1)} ${(cp * 22).toFixed(1)}) scale(${(1 - cp * .18).toFixed(3)})`);
+    const okCard = p > .22;
+    led.setAttribute('fill', okCard ? C.greenL : C.red);
+    ledR.setAttribute('stroke', okCard ? C.greenL : C.red);
+    /* 1. kapı açılır → kapanır */
+    const o1 = eIO(clamp((p - .24) / .16)) - eIO(clamp((p - .52) / .12));
+    d1a.setAttribute('transform', `translate(${(-o1 * 344).toFixed(1)} 0)`);
+    d1b.setAttribute('transform', `translate(${(o1 * 344).toFixed(1)} 0)`);
+    /* avuç içi taraması */
+    const sc = clamp((p - .40) / .16);
+    scan.setAttribute('opacity', sc > 0 && sc < 1 ? .85 : .12);
+    scan.setAttribute('y', (400 + ((t * 70) % 82)).toFixed(1));
+    bio.setAttribute('fill', p > .56 ? C.greenL : C.ink3);
+    /* 2. kapı ancak birincisi kapandıktan sonra açılır */
+    const o2 = eIO(clamp((p - .66) / .2));
+    d2a.setAttribute('transform', `translate(${(-o2 * 204).toFixed(1)} 0)`);
+    d2b.setAttribute('transform', `translate(${(o2 * 204).toFixed(1)} 0)`);
+    glow.setAttribute('opacity', (clamp((p - .6) / .25) * .95).toFixed(3));
+    cue(p);
+  };
+}
+
+/* ================= 3. SOĞUK KORİDOR (canvas, perspektif) ================= */
+function buildAisle(root){
+  root.innerHTML =
+    `<canvas id="cvA" width="1600" height="900" style="position:absolute;inset:0"></canvas>` +
+    svgWrap(`
+      <g data-at="0.03" data-dx="0" opacity="0">
+        <text class="tg" x="60" y="104">BÖLÜM 03 · SALON A</text>
+        <text class="hd" x="60" y="140">Soğuk koridor</text>
+      </g>
+      <g data-at="0.06" data-dx="0" opacity="0">
+        <rect x="1300" y="82" width="244" height="132" rx="4" fill="#060A10" fill-opacity=".72" stroke="#22303F"/>
+        <text class="tg" x="1318" y="106">KORİDOR ÖLÇÜMÜ</text>
+        <text class="lb" x="1318" y="134">Giriş havası</text><text class="dg" x="1526" y="134" text-anchor="end">20,4 °C</text>
+        <text class="lb" x="1318" y="160">Bağıl nem</text><text class="dg" x="1526" y="160" text-anchor="end">%45</text>
+        <text class="lb" x="1318" y="186">Hava hızı</text><text class="dg" x="1526" y="186" text-anchor="end">1,8 m/s</text>
+      </g>
+      ${callout(800, 214, 'KORİDOR KAPATMA', 'soğuk hava sadece cihazlara gider', .14, { side:'right', len:120 })}
+      ${callout(470, 470, 'KABİN ÖNÜ · EMİŞ', '18–22 °C · ASHRAE A1 sınıfı', .30, { side:'right', len:110, dx:-20 })}
+      ${callout(690, 646, 'DELİKLİ DÖŞEME PANELİ', '600 × 600 mm · %25 açıklık', .48, { side:'right', len:160 })}
+      ${callout(300, 250, 'TAVAN KABLO TAVASI', 'güç ve fiber ayrı katmanda', .64, { side:'right', len:150 })}
+      ${callout(1150, 520, 'KABİN KAPISI · %80 DELİKLİ', 'hava akışını kesmez', .80, { side:'left', len:120 })}`);
+
+  const cv = root.querySelector('#cvA'), g = cv.getContext('2d');
+  const cue = cueRig(root);
+
+  const F = 1150, CX = 800, CY = 492, EY = 1.5;
+  const AW = 1.35, RH = 2.06, RDX = 1.15, RW = .62, N = 34, CEIL = 2.62;
+  const racks = [];
+  for (let i = 0; i < N; i++) for (const s of [-1, 1])
+    racks.push({ s, z: 2.2 + i * (RW + .03), seed: i * 3.7 + (s > 0 ? 71 : 0) });
+
+  const P = (X, Y, Z) => { const k = F / Z; return [CX + X * k, CY - (Y - EY) * k]; };
+  const quad = (a, b, c, d, fill) => {
+    g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.lineTo(c[0], c[1]); g.lineTo(d[0], d[1]);
+    g.closePath(); g.fillStyle = fill; g.fill();
+  };
+  const fog = (rgb, z) => {
+    const f = clamp((z - 3) / 26, 0, .88);
+    return `rgb(${Math.round(lerp(rgb[0], 9, f))},${Math.round(lerp(rgb[1], 17, f))},${Math.round(lerp(rgb[2], 26, f))})`;
+  };
+
+  return (p, t) => {
+    const camZ = -1.4 + eIO(clamp(p)) * (N * (RW + .03) - 7.5);
+    g.clearRect(0, 0, 1600, 900);
+    /* zemin ve tavan zemini */
+    const bg = g.createLinearGradient(0, 0, 0, 900);
+    bg.addColorStop(0, '#070C13'); bg.addColorStop(.52, '#0B1520'); bg.addColorStop(1, '#05080D');
+    g.fillStyle = bg; g.fillRect(0, 0, 1600, 900);
+
+    /* uzak duvar */
+    const wz = N * (RW + .03) + 3 - camZ;
+    if (wz > 1){
+      const a = P(-6, 0, wz), b = P(6, 0, wz), c = P(6, 3.4, wz), d = P(-6, 3.4, wz);
+      quad([a[0], a[1]], [b[0], b[1]], [c[0], c[1]], [d[0], d[1]], '#0A121B');
+    }
+
+    /* döşeme çizgileri (600 mm karo) */
+    g.lineWidth = 1;
+    for (let z = Math.ceil((camZ + .8) / .6) * .6; z < camZ + 34; z += .6){
+      const zz = z - camZ; if (zz < .8) continue;
+      const a = P(-5.5, 0, zz), b = P(5.5, 0, zz);
+      g.strokeStyle = fog([26, 38, 52], zz); g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+    }
+    for (const X of [-AW, -AW / 2, 0, AW / 2, AW, -(AW + RDX), AW + RDX]){
+      const a = P(X, 0, .9), b = P(X, 0, 34);
+      g.strokeStyle = X === 0 ? '#1B2A3A' : '#16222F';
+      g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+    }
+    /* delikli panel noktaları (yakın) */
+    for (let z = Math.ceil((camZ + 1.2) / .6) * .6; z < camZ + 10; z += .6){
+      const zz = z - camZ;
+      for (let i = 0; i < 9; i++){
+        const X = -AW + .3 + i * ((2 * AW - .6) / 8);
+        const q = P(X, 0, zz + .3), r = Math.max(.8, 5 / zz);
+        g.fillStyle = `rgba(53,198,232,${(.32 * clamp(1 - zz / 12)).toFixed(3)})`;
+        g.beginPath(); g.arc(q[0], q[1], r, 0, 6.3); g.fill();
+      }
+    }
+
+    /* tavan kapatma paneli + aydınlatma bantları */
+    for (let z = Math.ceil((camZ + .8) / .6) * .6; z < camZ + 30; z += .6){
+      const z0 = z - camZ; if (z0 < .8) continue;
+      const a = P(-AW, CEIL, z0), b = P(AW, CEIL, z0);
+      g.strokeStyle = fog([22, 33, 46], z0); g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+    }
+    for (let i = 0; i < 26; i++){
+      const z0 = 1.2 + i * 1.8 - ((camZ % 1.8) + 1.8) % 1.8;
+      if (z0 < 3) continue;
+      const a = P(-.42, CEIL - .02, z0), b = P(.42, CEIL - .02, z0),
+            c = P(.42, CEIL - .02, z0 + .5), d = P(-.42, CEIL - .02, z0 + .5);
+      const al = clamp(1 - z0 / 26) * .62;
+      quad(a, b, c, d, `rgba(214,238,248,${al.toFixed(3)})`);
+    }
+    /* kablo tavaları */
+    for (const s of [-1, 1]){
+      for (const yy of [3.0, 3.22]){
+        const a = P(s * (AW + .5), yy, 1), b = P(s * (AW + .5), yy, 30);
+        g.strokeStyle = '#1A2634'; g.lineWidth = 2;
+        g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+      }
+      for (let i = 0; i < 40; i++){
+        const z0 = .8 + i * .75 - ((camZ % .75) + .75) % .75; if (z0 < .9) continue;
+        const a = P(s * (AW + .18), 3.0, z0), b = P(s * (AW + .95), 3.22, z0);
+        g.strokeStyle = fog([28, 40, 54], z0); g.lineWidth = 1;
+        g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+      }
+    }
+
+    /* kabinler: uzaktan yakına */
+    const vis = racks.map(r => ({ r, z0: r.z - camZ })).filter(o => o.z0 > .55).sort((a, b) => b.z0 - a.z0);
+    for (const { r, z0 } of vis){
+      const z1 = z0 + RW, X = r.s * AW, Xb = r.s * (AW + RDX);
+      const fA = P(X, 0, z0), fB = P(X, 0, z1), fC = P(X, RH, z1), fD = P(X, RH, z0);
+      /* yan (derinlik) yüzü */
+      const sA = P(X, 0, z0), sB = P(Xb, 0, z0), sC = P(Xb, RH, z0), sD = P(X, RH, z0);
+      quad(sA, sB, sC, sD, fog([13, 19, 27], z0));
+      /* üst yüz */
+      const tA = P(X, RH, z0), tB = P(Xb, RH, z0), tC = P(Xb, RH, z1), tD = P(X, RH, z1);
+      quad(tA, tB, tC, tD, fog([20, 29, 40], z0));
+      /* koridora bakan ön yüz */
+      quad(fA, fB, fC, fD, fog([17, 24, 33], z0));
+      /* çerçeve */
+      g.strokeStyle = fog([38, 52, 68], z0); g.lineWidth = 1;
+      g.beginPath(); g.moveTo(fA[0], fA[1]); g.lineTo(fB[0], fB[1]); g.lineTo(fC[0], fC[1]); g.lineTo(fD[0], fD[1]); g.closePath(); g.stroke();
+
+      if (z0 > 22) continue;
+      const face = (u, v) => P(X, v * RH, z0 + u * RW);
+      const detail = z0 < 11;
+      const rows = 18;
+      for (let i = 0; i < rows; i++){
+        const v0 = .06 + i * .050, v1 = v0 + .040;
+        const a = face(.04, v0), b = face(.96, v0), c = face(.96, v1), d = face(.04, v1);
+        quad(a, b, c, d, fog([25, 35, 47], z0));
+        if (!detail) continue;
+        /* sürücü yuvaları */
+        for (let k = 0; k < 6; k++){
+          const u0 = .30 + k * .105, u1 = u0 + .075;
+          quad(face(u0, v0 + .006), face(u1, v0 + .006), face(u1, v1 - .006), face(u0, v1 - .006), fog([18, 26, 36], z0));
+        }
+        /* durum LED'leri */
+        const ph = rnd(r.seed + i * 5.3);
+        const on = Math.sin(t * (2.2 + ph * 7) + ph * 41) > -.15;
+        const hot = rnd(r.seed + i) > .93;
+        const col = hot ? '240,166,43' : '63,208,127';
+        const al = (on ? .95 : .22) * clamp(1 - z0 / 14, .15, 1);
+        quad(face(.09, v0 + .008), face(.155, v0 + .008), face(.155, v1 - .01), face(.09, v1 - .01),
+             `rgba(${col},${al.toFixed(3)})`);
+        quad(face(.19, v0 + .012), face(.235, v0 + .012), face(.235, v1 - .014), face(.19, v1 - .014),
+             `rgba(53,198,232,${(al * .7).toFixed(3)})`);
+      }
+      /* tepedeki anahtar bandı */
+      const a = face(.04, .93), b = face(.96, .93), c = face(.96, .985), d = face(.04, .985);
+      quad(a, b, c, d, fog([14, 20, 28], z0));
+      if (detail) for (let k = 0; k < 12; k++){
+        const u0 = .10 + k * .068;
+        const on = Math.sin(t * 5 + k + r.seed) > 0;
+        quad(face(u0, .945), face(u0 + .035, .945), face(u0 + .035, .972), face(u0, .972),
+             `rgba(242,199,68,${(on ? .8 : .25).toFixed(2)})`);
+      }
+    }
+
+    /* soğuk hava pusu + vinyet */
+    const hz = g.createRadialGradient(800, 470, 30, 800, 470, 520);
+    hz.addColorStop(0, 'rgba(53,198,232,0.13)'); hz.addColorStop(1, 'rgba(53,198,232,0)');
+    g.fillStyle = hz; g.fillRect(0, 0, 1600, 900);
+    cue(p);
+  };
+}
+
+/* ================= 4. KABİNİN İÇİ ================= */
+function buildRack(root){
+  const X0 = 452, W = 372, Y0 = 92, UH = 17.2;
+  const items = [
+    ['sw', 1], ['sw', 1], ['pp', 1], ['blank', 1],
+    ['srv', 1], ['srv', 1], ['srv', 1], ['srv', 1], ['srv', 1], ['srv', 1],
+    ['gpu', 2], ['gpu', 2], ['blank', 1], ['sto', 2], ['sto', 2],
+    ['srv', 1], ['srv', 1], ['srv', 1], ['srv', 1], ['kvm', 1], ['blank', 2],
+    ['srv', 1], ['srv', 1], ['srv', 1], ['srv', 1], ['srv', 1], ['srv', 1],
+    ['blank', 1], ['bat', 3], ['srv', 1], ['srv', 1], ['blank', 2]
+  ];
+  let y = Y0, body = '', anchors = {};
+  items.forEach(([kind, u], idx) => {
+    const h = u * UH - 2, x = X0 + 10, w = W - 20;
+    const rec = (f, s) => `<rect x="${x}" y="${y.toFixed(1)}" width="${w}" height="${h.toFixed(1)}" rx="1.5" fill="${f}" stroke="${s}"/>`;
+    if (kind === 'sw'){
+      body += rec('#0C131C', '#25323F');
+      for (let i = 0; i < 24; i++) body += `<rect x="${x + 16 + i * 8.6}" y="${y + 4}" width="6" height="${(h / 2 - 3).toFixed(1)}" fill="#050A0F"/>`;
+      for (let i = 0; i < 24; i++) body += `<rect x="${x + 16 + i * 8.6}" y="${y + h / 2 + 1}" width="6" height="${(h / 2 - 5).toFixed(1)}" fill="#050A0F"/>`;
+      body += `<rect x="${x + w - 52}" y="${y + 3}" width="20" height="${h - 6}" fill="#0A0F16" stroke="#F2C744" stroke-opacity=".45"/>
+               <rect x="${x + w - 28}" y="${y + 3}" width="20" height="${h - 6}" fill="#0A0F16" stroke="#F2C744" stroke-opacity=".45"/>
+               <circle class="ledx" cx="${x + 8}" cy="${y + h / 2}" r="2.6" fill="#3FD07F"/>`;
+      anchors[idx] = y + h / 2;
+    } else if (kind === 'pp'){
+      body += rec('#101822', '#25323F');
+      for (let i = 0; i < 24; i++) body += `<rect x="${x + 14 + i * 8.8}" y="${y + 4}" width="6.4" height="${h - 8}" rx="1" fill="#0A1218" stroke="#4FD6C0" stroke-opacity=".5"/>`;
+      anchors[idx] = y + h / 2;
+    } else if (kind === 'srv'){
+      body += rec('#151E29', '#232F3C');
+      for (let i = 0; i < 8; i++) body += `<rect x="${x + 70 + i * 22}" y="${y + 3}" width="18" height="${h - 6}" rx="1" fill="#0E151D" stroke="#1E2A36"/>`;
+      body += `<circle class="ledx" cx="${x + 12}" cy="${y + h / 2 - 3}" r="2.4" fill="#3FD07F" style="animation-delay:${(idx * .21).toFixed(2)}s"/>
+               <circle class="ledx" cx="${x + 12}" cy="${y + h / 2 + 4}" r="2.4" fill="#35C6E8" style="animation-delay:${(idx * .37).toFixed(2)}s"/>
+               <rect x="${x + 26}" y="${y + 4}" width="36" height="${h - 8}" fill="#0E151D"/>`;
+      anchors[idx] = y + h / 2;
+    } else if (kind === 'gpu'){
+      body += rec('#131B26', '#2A3744');
+      for (let i = 0; i < 3; i++) body += `<circle cx="${x + 54 + i * 44}" cy="${y + h / 2}" r="${h / 2 - 5}" fill="#0A1017" stroke="#233140"/>`
+        + `<circle cx="${x + 54 + i * 44}" cy="${y + h / 2}" r="3" fill="#1A2533"/>`;
+      body += `<text class="lbs" x="${x + w - 14}" y="${y + h / 2 + 4}" text-anchor="end" font-size="10">GPU 8 × 700 W</text>
+               <circle class="ledx" cx="${x + 12}" cy="${y + h / 2}" r="2.6" fill="#F0A62B"/>`;
+      anchors[idx] = y + h / 2;
+    } else if (kind === 'sto'){
+      body += rec('#121A24', '#232F3C');
+      for (let r = 0; r < 2; r++) for (let i = 0; i < 12; i++)
+        body += `<rect x="${x + 26 + i * 25}" y="${y + 4 + r * (h / 2 - 1)}" width="21" height="${h / 2 - 6}" rx="1" fill="#0D141C" stroke="#1E2A36"/>
+                 <circle class="flick" cx="${x + 30 + i * 25}" cy="${y + 4 + r * (h / 2 - 1) + (h / 4 - 3)}" r="1.6" fill="#4FD6C0" style="animation-delay:${((i + r * 7) * .13).toFixed(2)}s"/>`;
+      anchors[idx] = y + h / 2;
+    } else if (kind === 'kvm'){
+      body += rec('#0F1720', '#25323F');
+      body += `<rect x="${x + 20}" y="${y + 3}" width="96" height="${h - 6}" fill="#06131A" stroke="#1E2A36"/>
+               <rect x="${x + 24}" y="${y + 6}" width="60" height="2" fill="#35C6E8" opacity=".7"/>
+               <rect x="${x + 24}" y="${y + 10}" width="82" height="2" fill="#35C6E8" opacity=".4"/>
+               <rect x="${x + 130}" y="${y + 4}" width="${w - 150}" height="${h - 8}" rx="1" fill="#0C131B" stroke="#1A2432"/>`;
+      anchors[idx] = y + h / 2;
+    } else if (kind === 'bat'){
+      body += rec('#0F1620', '#2A3744');
+      for (let i = 0; i < 5; i++) body += `<rect x="${x + 18 + i * 66}" y="${y + 6}" width="56" height="${h - 12}" rx="2" fill="#131C26" stroke="#233140"/>`;
+      body += `<text class="lbs" x="${x + w / 2}" y="${y + h - 6}" text-anchor="middle" font-size="10">AKÜ RAFI · 8 dk</text>`;
+      anchors[idx] = y + h / 2;
+    } else {
+      body += `<rect x="${x}" y="${y.toFixed(1)}" width="${w}" height="${h.toFixed(1)}" rx="1.5" fill="#0D131B" stroke="#1A2330"/>
+               <line x1="${x + w / 2 - 22}" y1="${y + h / 2}" x2="${x + w / 2 + 22}" y2="${y + h / 2}" stroke="#202C39" stroke-width="2"/>`;
+      anchors[idx] = y + h / 2;
+    }
+    y += u * UH;
+  });
+
+  let ruler = '';
+  for (let u = 0; u <= 42; u++){
+    const yy = Y0 + u * UH;
+    ruler += `<line x1="${X0 - 26}" y1="${yy}" x2="${X0 - (u % 5 ? 19 : 13)}" y2="${yy}" stroke="#22303F"/>`;
+    if (u % 5 === 0 && u > 0) ruler += `<text class="lbs" x="${X0 - 34}" y="${yy + 4}" text-anchor="end" font-size="10">${42 - u}U</text>`;
+  }
+  let pduA = '', pduB = '';
+  for (let i = 0; i < 22; i++){
+    pduA += `<rect x="${X0 - 14}" y="${Y0 + 12 + i * 32}" width="9" height="13" rx="1.5" fill="#0A1017" stroke="#35C6E8" stroke-opacity=".4"/>`;
+    pduB += `<rect x="${X0 + W + 5}" y="${Y0 + 12 + i * 32}" width="9" height="13" rx="1.5" fill="#0A1017" stroke="#F0A62B" stroke-opacity=".4"/>`;
+  }
+
+  root.innerHTML = svgWrap(`
+  <rect width="1600" height="900" fill="#080C12"/>
+  <g id="rkCam">
+    <!-- tavan kablo girişi -->
+    <path d="M${X0 + 40} 92 C ${X0 + 30} 40, ${X0 - 60} 50, ${X0 - 120} 26" stroke="#1E2A36" stroke-width="5" fill="none"/>
+    <path d="M${X0 + 120} 92 C ${X0 + 120} 40, ${X0 + 260} 46, ${X0 + 330} 20" stroke="#F2C744" stroke-opacity=".28" stroke-width="4" fill="none"/>
+    <!-- kabin gövdesi -->
+    <rect x="${X0 - 22}" y="${Y0 - 30}" width="${W + 44}" height="${42 * UH + 60}" rx="3" fill="#0B1118" stroke="#2A3744" stroke-width="2"/>
+    <rect x="${X0 - 22}" y="${Y0 - 30}" width="${W + 44}" height="18" fill="#141D28"/>
+    <text class="lbs" x="${X0 + W / 2}" y="${Y0 - 17}" text-anchor="middle" font-size="10">SIRA A7 · KABİN 04</text>
+    ${ruler}
+    <g id="rkPduA">${pduA}<rect x="${X0 - 16}" y="${Y0}" width="13" height="${42 * UH}" fill="none" stroke="#35C6E8" stroke-opacity=".22"/></g>
+    <g id="rkPduB">${pduB}<rect x="${X0 + W + 3}" y="${Y0}" width="13" height="${42 * UH}" fill="none" stroke="#F0A62B" stroke-opacity=".22"/></g>
+    <text class="lbi" x="${X0 - 10}" y="${Y0 + 42 * UH + 22}" text-anchor="middle" font-size="12">A</text>
+    <text class="lb" x="${X0 + W + 10}" y="${Y0 + 42 * UH + 22}" text-anchor="middle" font-size="12" fill="#F0A62B">B</text>
+    ${body}
+    <!-- tekerlekler -->
+    <circle cx="${X0 + 10}" cy="${Y0 + 42 * UH + 36}" r="7" fill="#101923" stroke="#22303F"/>
+    <circle cx="${X0 + W - 10}" cy="${Y0 + 42 * UH + 36}" r="7" fill="#101923" stroke="#22303F"/>
+  </g>
+
+  <g data-at="0.02" data-dx="0" opacity="0">
+    <text class="tg" x="60" y="104">BÖLÜM 04 · KABİN ANATOMİSİ</text>
+    <text class="hd" x="60" y="140">42U, tepeden tabana</text>
+  </g>
+  ${callout(X0 + W - 30, anchors[0], 'ToR ANAHTAR A ve B', '48 × 25 GbE + 2 × 100 GbE yukarı bağlantı', .12, { side:'right', len:90 })}
+  ${callout(X0 + W - 30, anchors[2], 'PATCH PANEL', '24 × LC dupleks · kabin dışı fiber', .24, { side:'right', len:120 })}
+  ${callout(X0 + W - 30, anchors[6], '1U SUNUCU × 14', '2 × CPU · 512 GB RAM · 8 NVMe', .34, { side:'right', len:150 })}
+  ${callout(X0 + W - 30, anchors[10], 'GPU DÜĞÜMÜ · 2U', '8 hızlandırıcı · tek başına 5,6 kW', .46, { side:'right', len:120 })}
+  ${callout(X0 + W - 30, anchors[13], 'DEPOLAMA RAFI', '24 × 3,5″ disk · doğrudan bağlı', .56, { side:'right', len:150 })}
+  ${callout(X0 + W - 30, anchors[19], 'KVM KONSOLU', 'ağ yoksa fiziksel erişim', .66, { side:'right', len:180 })}
+  ${callout(X0 + W - 30, anchors[27], 'KÖR PANEL', 'hava sızıntısını kapatır', .76, { side:'right', len:120 })}
+  ${callout(X0 - 10, anchors[22], 'PDU A', 'ikinci hat sağda: B', .86, { side:'left', len:90 })}
+  <g data-at="0.9" data-dx="0" opacity="0">
+    <rect x="1060" y="690" width="476" height="152" rx="4" fill="#0A1017" fill-opacity=".8" stroke="#22303F"/>
+    <text class="tg" x="1082" y="718">KABİN TOPLAMI</text>
+    <text class="lb" x="1082" y="748">Çekilen güç</text><text class="dg" x="1516" y="748" text-anchor="end">12,4 kW</text>
+    <text class="lb" x="1082" y="774">Besleme</text><text class="dg" x="1516" y="774" text-anchor="end">2 × 32 A</text>
+    <text class="lb" x="1082" y="800">Hava debisi</text><text class="dg" x="1516" y="800" text-anchor="end">1 950 m³/h</text>
+    <text class="lb" x="1082" y="826">Yüklü ağırlık</text><text class="dg" x="1516" y="826" text-anchor="end">712 kg</text>
+  </g>`);
+
+  const cam = root.querySelector('#rkCam'), cue = cueRig(root);
+  return (p) => { const k = eIO(clamp(p)); camSet(cam, lerp(1.0, 1.06, k), lerp(0, -160, k), 0); cue(p); };
+}
+
+/* ================= 5. AĞ ================= */
+function buildNet(root){
+  const dev = (x, y, w, h, t1, t2, col) => `
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#101823" stroke="${col || '#26333F'}"/>
+    <rect x="${x}" y="${y}" width="${w}" height="3" fill="${col || '#26333F'}" opacity=".7"/>
+    <text class="lb" x="${x + w / 2}" y="${y + (t2 ? h / 2 - 1 : h / 2 + 4)}" text-anchor="middle" font-size="12">${t1}</text>
+    ${t2 ? `<text class="lbs" x="${x + w / 2}" y="${y + h / 2 + 15}" text-anchor="middle" font-size="10">${t2}</text>` : ''}`;
+
+  const isp = [[150, 210], [150, 600]], rtr = [[380, 250], [380, 560]], fw = [[600, 250], [600, 560]];
+  const spn = [[830, 170], [830, 330], [830, 490], [830, 650]];
+  const lf  = [[1090, 150], [1090, 270], [1090, 390], [1090, 510], [1090, 630], [1090, 750]];
+  const rk  = [[1380, 150], [1380, 270], [1380, 390], [1380, 510], [1380, 630], [1380, 750]];
+  const W1 = 150, H1 = 62, W2 = 120, H2 = 54, WR = 110, HR = 50;
+  const cen = (a, w, h) => [a[0] + w / 2, a[1] + h / 2];
+
+  const links = [], lines = [];
+  const link = (a, b, col, op, sw) => {
+    links.push({ x1: a[0], y1: a[1], x2: b[0], y2: b[1], col });
+    lines.push(`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${col}" stroke-opacity="${op}" stroke-width="${sw || 1}"/>`);
+  };
+  isp.forEach((a, i) => link(cen(a, W1, H1), cen(rtr[i], W2, H2), C.cyanD, .5, 2));
+  rtr.forEach(a => fw.forEach(b => link(cen(a, W2, H2), cen(b, W2, H2), C.cyanD, .3)));
+  fw.forEach(a => spn.forEach(b => link(cen(a, W2, H2), cen(b, W2, H2), C.violet, .28)));
+  spn.forEach(a => lf.forEach(b => link(cen(a, W2, H2), cen(b, W2, H2), C.fiber, .18)));
+  lf.forEach((a, i) => link(cen(a, W2, H2), cen(rk[i], WR, HR), C.aqua, .5, 2));
+
+  let pk = '';
+  const packets = [];
+  for (let i = 0; i < 34; i++){
+    const li = Math.floor(rnd(i * 2.3) * links.length);
+    packets.push({ li, off: rnd(i * 5.1), spd: .28 + rnd(i * 7.9) * .5 });
+    pk += `<circle id="npk${i}" r="3.2" fill="${links[li].col}"/>`;
+  }
+
+  root.innerHTML = svgWrap(`
+  <rect width="1600" height="900" fill="#080C12"/>
+  <g id="ntCam">
+    <g stroke-linecap="round">${lines.join('')}</g>
+    <g id="ntPk">${pk}</g>
+    ${isp.map((a, i) => dev(a[0], a[1], W1, H1, `İSS ${i ? 'B' : 'A'}`, 'BGP · AS64500', C.cyanD)).join('')}
+    ${rtr.map((a, i) => dev(a[0], a[1], W2, H2, `Yönlendirici ${i + 1}`, 'sınır', C.cyanD)).join('')}
+    ${fw.map((a, i) => dev(a[0], a[1], W2, H2, `Güv. duvarı ${i + 1}`, 'DDoS süzme', C.violet)).join('')}
+    ${spn.map((a, i) => dev(a[0], a[1], W2, H2, `Spine ${i + 1}`, '32 × 100G', C.violet)).join('')}
+    ${lf.map((a, i) => dev(a[0], a[1], W2, H2, `Leaf ${i + 1}`, 'ToR çifti', C.fiber)).join('')}
+    ${rk.map((a, i) => `<g>${dev(a[0], a[1], WR, HR, `Kabin A${i + 1}`, '', C.aqua)}</g>`).join('')}
+    <text class="tg" x="225" y="190">İNTERNET</text>
+    <text class="tg" x="440" y="130">KENAR</text>
+    <text class="tg" x="890" y="130">OMURGA (SPINE)</text>
+    <text class="tg" x="1150" y="112">ERİŞİM (LEAF)</text>
+    <text class="tg" x="1435" y="112">KABİNLER</text>
+  </g>
+  <g data-at="0.02" data-dx="0" opacity="0">
+    <text class="tg" x="60" y="104">BÖLÜM 05 · AĞ MİMARİSİ</text>
+    <text class="hd" x="60" y="140">Spine-leaf, iki bağımsız yol</text>
+  </g>
+  ${callout(225, 241, 'İKİ AYRI TAŞIYICI', 'biri kesilse BGP diğerine döner', .14, { side:'right', len:60 })}
+  ${callout(660, 277, 'KENAR GÜVENLİK', 'hacimsel saldırı süzme', .3, { side:'right', len:60 })}
+  ${callout(890, 197, 'HER LEAF, HER SPINE’A', 'iki kabin arası mesafe her zaman aynı', .46, { side:'right', len:70 })}
+  ${callout(1150, 657, 'KABİNE ÇİFT YOL', 'tek anahtar arızası trafiği kesmez', .62, { side:'right', len:60 })}
+  <g data-at="0.78" data-dx="0" opacity="0">
+    <rect x="60" y="700" width="420" height="150" rx="4" fill="#0A1017" fill-opacity=".8" stroke="#22303F"/>
+    <text class="tg" x="82" y="728">FİBER BAĞLANTI</text>
+    <rect x="82" y="744" width="54" height="30" rx="3" fill="#101822" stroke="#4FD6C0" stroke-opacity=".5"/>
+    <rect x="90" y="752" width="14" height="14" rx="2" fill="#4FD6C0" opacity=".55"/>
+    <rect x="110" y="752" width="14" height="14" rx="2" fill="#4FD6C0" opacity=".55"/>
+    <text class="lb" x="152" y="758">100GBASE-LR4</text>
+    <text class="lbs" x="152" y="776">LC dupleks · tek mod · 10 km</text>
+    <text class="lb" x="82" y="812">Omurga toplam kapasite</text><text class="dg" x="460" y="812" text-anchor="end">1,6 Tbps</text>
+    <text class="lb" x="82" y="838">Kabin içi gecikme</text><text class="dg" x="460" y="838" text-anchor="end">0,9 µs</text>
+  </g>`);
+
+  const pkEls = packets.map((_, i) => root.querySelector('#npk' + i));
+  const cam = root.querySelector('#ntCam'), cue = cueRig(root);
+  return (p, t) => {
+    camSet(cam, lerp(1.04, 1.0, eIO(clamp(p))), 0, 0);
+    packets.forEach((q, i) => {
+      const L = links[q.li], u = (q.off + t * q.spd) % 1;
+      pkEls[i].setAttribute('cx', (L.x1 + (L.x2 - L.x1) * u).toFixed(1));
+      pkEls[i].setAttribute('cy', (L.y1 + (L.y2 - L.y1) * u).toFixed(1));
+      pkEls[i].setAttribute('opacity', (Math.sin(u * Math.PI) * .95).toFixed(2));
+    });
+    cue(p);
+  };
+}
+
+/* ================= 6. DEPOLAMA ================= */
+function buildStor(root){
+  /* disk rafları */
+  const shelf = (x, y, w, h, cols, rows, name, sub, col) => {
+    let d = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#0D141C" stroke="#26333F"/>
+             <text class="lb" x="${x}" y="${y - 20}" font-size="12">${name}</text>
+             <text class="lbs" x="${x}" y="${y - 4}">${sub}</text>`;
+    const dw = (w - 22) / cols, dh = (h - 18) / rows;
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++){
+      const dx = x + 11 + c * dw, dy = y + 9 + r * dh;
+      d += `<rect x="${dx.toFixed(1)}" y="${dy.toFixed(1)}" width="${(dw - 3).toFixed(1)}" height="${(dh - 3).toFixed(1)}" rx="1.5" fill="#121A24" stroke="#1E2A36"/>
+            <circle class="flick" cx="${(dx + 6).toFixed(1)}" cy="${(dy + dh / 2 - 1.5).toFixed(1)}" r="1.8" fill="${col}" style="animation-delay:${((r * cols + c) * .09).toFixed(2)}s"/>`;
+    }
+    return d;
+  };
+
+  /* silme kodlaması: 6 veri + 2 eşlik */
+  let ec = '';
+  for (let i = 0; i < 8; i++){
+    const x = 600 + (i % 4) * 100, y = 330 + Math.floor(i / 4) * 78, dataC = i < 6;
+    ec += `<g data-at="${(.22 + i * .045).toFixed(3)}" data-dx="0" opacity="0">
+      <rect x="${x}" y="${y}" width="82" height="58" rx="3" fill="#101823" stroke="${dataC ? C.cyanD : C.violet}"/>
+      <text class="lb" x="${x + 41}" y="${y + 28}" text-anchor="middle" font-size="12">${dataC ? 'D' + (i + 1) : 'P' + (i - 5)}</text>
+      <text class="lbs" x="${x + 41}" y="${y + 45}" text-anchor="middle" font-size="9.5">${dataC ? 'veri' : 'eşlik'}</text></g>`;
+  }
+  let nodes = '';
+  for (let i = 0; i < 3; i++){
+    const x = 600 + i * 140;
+    nodes += `<g data-at="${(.6 + i * .04).toFixed(2)}" data-dx="0" opacity="0">
+      <rect x="${x}" y="560" width="110" height="46" rx="3" fill="#0D141C" stroke="#26333F"/>
+      <text class="lbs" x="${x + 55}" y="588" text-anchor="middle">Düğüm ${i + 1}</text></g>`;
+  }
+
+  /* teyp kütüphanesi yuvaları */
+  let slots = '';
+  for (let c = 0; c < 5; c++) for (let r = 0; r < 9; r++){
+    slots += `<rect x="${1140 + c * 46}" y="${180 + r * 44}" width="38" height="36" rx="2" fill="#101822" stroke="#1E2A36"/>
+              <rect x="${1145 + c * 46}" y="${186 + r * 44}" width="28" height="24" rx="1" fill="#16202B"/>
+              <rect x="${1148 + c * 46}" y="${190 + r * 44}" width="22" height="4" fill="#233140"/>`;
+  }
+
+  /* kapasite çubukları — tek ölçü, tek renk */
+  const caps = [['NVMe (sıcak)', .74, '184 TB'], ['SSD (ılık)', .61, '960 TB'], ['Disk (soğuk)', .48, '6,4 PB'], ['Teyp (arşiv)', .29, '21 PB']];
+  let bars = '';
+  caps.forEach((c, i) => {
+    const y = 742 + i * 34, w = 300 * c[1];
+    bars += `<text class="lb" x="70" y="${y + 11}" font-size="12">${c[0]}</text>
+      <rect x="240" y="${y}" width="300" height="14" rx="2" fill="#141C26"/>
+      <rect x="240" y="${y}" width="${w.toFixed(1)}" height="14" rx="2" fill="${C.cyanD}"/>
+      <rect x="${(240 + w).toFixed(1)}" y="${y}" width="2" height="14" fill="#080C12"/>
+      <text class="dg" x="556" y="${y + 12}" font-size="12.5">${c[2]}</text>
+      <text class="lbs" x="640" y="${y + 12}">%${Math.round(c[1] * 100)} dolu</text>`;
+  });
+
+  root.innerHTML = svgWrap(`
+  <rect width="1600" height="900" fill="#080C12"/>
+  <g id="stCam">
+    ${shelf(70, 200, 470, 170, 12, 2, 'NVMe RAFI', '24 × U.2 · 30 TB · okuma 7 GB/s', C.aqua)}
+    ${shelf(70, 440, 470, 210, 12, 3, 'DİSK RAFI', '36 × 3,5" · 24 TB · SAS', C.greenL)}
+    <!-- silme kodlaması -->
+    <text class="tg" x="600" y="212">SİLME KODLAMASI · 6 + 2</text>
+    <g data-at="0.1" data-dx="0" opacity="0">
+      <rect x="700" y="232" width="180" height="52" rx="3" fill="#131C26" stroke="#2E3E50"/>
+      <text class="lb" x="790" y="263" text-anchor="middle" font-size="12">Yazılan nesne</text>
+    </g>
+    <g data-at="0.2" data-dx="0" opacity="0">
+      <path d="M790 288 L790 318" stroke="#2E3E50" stroke-width="2"/>
+      <path d="M786 312 L790 322 L794 312 Z" fill="#2E3E50"/>
+    </g>
+    ${ec}
+    <g data-at="0.56" data-dx="0" opacity="0">
+      <path d="M640 466 L655 552 M740 466 L700 552 M840 466 L745 552 M640 544 L800 552 M740 544 L845 552 M840 544 L880 552"
+        stroke="#243243" stroke-width="1.5" fill="none"/>
+    </g>
+    ${nodes}
+    <g id="stFail" opacity="0">
+      <rect x="878" y="556" width="114" height="54" rx="3" fill="none" stroke="${C.red}" stroke-width="2"/>
+      <path d="M896 570 L974 598 M974 570 L896 598" stroke="${C.red}" stroke-width="2"/>
+      <text class="lb" x="935" y="634" text-anchor="middle" fill="${C.red}" font-size="12">düğüm kaybı</text>
+      <text class="lbs" x="935" y="652" text-anchor="middle">veri kalan 6 parçadan kurulur</text>
+    </g>
+    <!-- teyp kütüphanesi -->
+    <text class="lb" x="1140" y="150" font-size="12">TEYP KÜTÜPHANESİ</text>
+    <text class="lbs" x="1140" y="166">LTO-9 · 45 kaset · 18 TB/kaset</text>
+    <rect x="1120" y="172" width="410" height="580" rx="4" fill="#0B1118" stroke="#26333F"/>
+    ${slots}
+    <line x1="1390" y1="182" x2="1390" y2="742" stroke="#1A2432" stroke-width="3"/>
+    <g id="stArm"><rect x="1360" y="0" width="62" height="30" rx="3" fill="#18222E" stroke="#2E3E50"/>
+      <rect x="1370" y="6" width="26" height="18" rx="1" fill="#233140"/>
+      <circle cx="1412" cy="15" r="4" fill="${C.amberL}"/></g>
+    <rect x="1140" y="676" width="220" height="60" rx="3" fill="#101822" stroke="#26333F"/>
+    <text class="lbs" x="1250" y="712" text-anchor="middle">SÜRÜCÜ 1 · yazıyor</text>
+    ${bars}
+    <text class="tg" x="70" y="722">KAPASİTE KATMANLARI</text>
+  </g>
+  <g data-at="0.02" data-dx="0" opacity="0">
+    <text class="tg" x="60" y="104">BÖLÜM 06 · DEPOLAMA</text>
+    <text class="hd" x="60" y="140">Sıcaktan arşive</text>
+  </g>`);
+
+  const arm = root.querySelector('#stArm'), fail = root.querySelector('#stFail'), cue = cueRig(root);
+  return (p, t) => {
+    const yy = 190 + (Math.sin(t * .55) * .5 + .5) * 500;
+    arm.setAttribute('transform', `translate(0 ${yy.toFixed(1)})`);
+    fail.setAttribute('opacity', clamp((p - .72) / .1).toFixed(2));
+    cue(p);
+  };
+}
+
+/* ================= 7. SOĞUTMA ================= */
+function buildCool(root){
+  const flow = (d, col, cls, w) =>
+    `<path class="${cls}" d="${d}" stroke="${col}" stroke-width="${w || 7}" fill="none"
+       stroke-linecap="round" stroke-dasharray="16 14" opacity=".75"/>`;
+  const arrow = (x, y, dir, col) => {
+    const m = { up:'0 -11 8 4 -8 4', down:'0 11 8 -4 -8 -4', left:'-11 0 4 8 4 -8', right:'11 0 -4 8 -4 -8' }[dir];
+    const pts = m.split(' ').map(Number);
+    return `<polygon points="${x + pts[0]},${y + pts[1]} ${x + pts[2]},${y + pts[3]} ${x + pts[4]},${y + pts[5]}" fill="${col}" opacity=".85"/>`;
+  };
+  let rk = '';
+  for (const [x, faceRight] of [[520, true], [860, false]]){
+    rk += `<rect x="${x}" y="430" width="140" height="282" fill="#0E151E" stroke="#26333F"/>`;
+    for (let i = 0; i < 14; i++)
+      rk += `<rect x="${x + 6}" y="${436 + i * 19.6}" width="128" height="15" rx="1" fill="#141D28" stroke="#1D2733"/>
+             <circle class="ledx" cx="${x + (faceRight ? 126 : 14)}" cy="${443.5 + i * 19.6}" r="2.2" fill="#3FD07F" style="animation-delay:${(i * .17).toFixed(2)}s"/>`;
+    rk += `<rect x="${faceRight ? x + 136 : x - 4}" y="430" width="4" height="282" fill="${C.cyanD}" opacity=".5"/>`;
+  }
+  let tiles = '';
+  for (let i = 0; i < 2; i++){
+    const tx = 668 + i * 98;
+    tiles += `<rect x="${tx}" y="700" width="90" height="12" fill="#0C131B" stroke="${C.cyanD}" stroke-opacity=".45"/>`;
+    for (let k = 0; k < 7; k++) tiles += `<circle cx="${tx + 9 + k * 12}" cy="706" r="2.2" fill="${C.cyan}" opacity=".5"/>`;
+  }
+  let coil = '';
+  for (let i = 0; i < 9; i++) coil += `<path d="M186 ${470 + i * 14} q 22 -10 44 0 q 22 10 44 0 q 22 -10 44 0" stroke="${C.cyanD}" stroke-opacity=".55" fill="none" stroke-width="2"/>`;
+
+  root.innerHTML = svgWrap(`
+  <rect width="1600" height="900" fill="#070B11"/>
+  <g id="clCam">
+    <!-- çatı üstü -->
+    <rect y="0" width="1600" height="126" fill="#050810"/>
+    <g><rect x="1090" y="34" width="330" height="88" rx="3" fill="#0C141D" stroke="#1E2A38"/>
+      ${fanG(1150, 60, 20, 1)}${fanG(1255, 60, 20, 1)}${fanG(1360, 60, 20, 1)}
+      <text class="lbs" x="1255" y="110" text-anchor="middle" font-size="10">CHILLER + KURU SOĞUTUCU</text></g>
+    <rect y="126" width="1600" height="14" fill="#141D28"/>
+    <!-- oda -->
+    <rect y="140" width="1600" height="660" fill="#090E15"/>
+    <rect x="0" y="140" width="1600" height="126" fill="#0B1118"/>
+    <text class="tg" x="80" y="176">SICAK HAVA DÖNÜŞ BOŞLUĞU (TAVAN)</text>
+    <line x1="0" y1="266" x2="1600" y2="266" stroke="#1A2432" stroke-dasharray="6 8"/>
+    <!-- yükseltilmiş döşeme -->
+    <rect y="700" width="1600" height="12" fill="#101822" stroke="#22303F"/>
+    <rect y="712" width="1600" height="78" fill="#080D14"/>
+    <rect y="790" width="1600" height="110" fill="#0A0F16"/>
+    <text class="tg" x="80" y="760">DÖŞEME ALTI · 600 mm · SOĞUK HAVA KANALI</text>
+    ${[...Array(18)].map((_, i) => `<line x1="${60 + i * 88}" y1="700" x2="${60 + i * 88}" y2="712" stroke="#22303F"/>`).join('')}
+    ${tiles}
+    <!-- kabinler + koridor kapatma -->
+    ${rk}
+    <rect x="660" y="416" width="200" height="14" fill="#141D28" stroke="#2E3E50"/>
+    <text class="lbs" x="760" y="408" text-anchor="middle" font-size="10">KORİDOR KAPATMA</text>
+    <text class="lbi" x="760" y="470" text-anchor="middle" font-size="13">SOĞUK</text>
+    <text class="lbi" x="760" y="492" text-anchor="middle" font-size="13">21,0 °C</text>
+    <text class="lb" x="420" y="470" text-anchor="middle" fill="${C.amberL}" font-size="13">SICAK</text>
+    <text class="lb" x="420" y="492" text-anchor="middle" fill="${C.amberL}" font-size="13">36,2 °C</text>
+    <!-- CRAH -->
+    <rect x="150" y="300" width="230" height="412" rx="3" fill="#0C131C" stroke="#26333F"/>
+    <rect x="150" y="300" width="230" height="22" fill="#141D28"/>
+    <text class="lbs" x="265" y="316" text-anchor="middle" font-size="10">CRAH 1 · 4+1 YEDEKLİ</text>
+    <rect x="164" y="330" width="202" height="46" fill="#0A0F16" stroke="#1E2A36"/>
+    ${[...Array(8)].map((_, i) => `<line x1="${170 + i * 25}" y1="332" x2="${170 + i * 25}" y2="374" stroke="#1E2A36"/>`).join('')}
+    <g>${coil}</g>
+    <text class="lbs" x="265" y="462" text-anchor="middle" font-size="10">SOĞUK SU SERPANTİNİ</text>
+    ${fanG(265, 645, 42)}
+    <text class="lbs" x="265" y="700" text-anchor="middle" font-size="10">FAN · DEĞİŞKEN DEVİR</text>
+    <!-- soğuk su boruları -->
+    ${flow('M1255 122 L1255 172 L300 172 L300 300', C.cyanD, 'flowW', 6)}
+    ${flow('M1290 122 L1290 200 L340 200 L340 300', C.amber, 'flowWr', 6)}
+    <text class="lbs" x="700" y="164">SOĞUK SU GİRİŞ 12 °C</text>
+    <text class="lbs" x="700" y="222">DÖNÜŞ 18 °C</text>
+    <!-- hava yolları -->
+    ${flow('M265 700 L265 750 L700 750', C.cyan, 'flowC', 9)}
+    ${flow('M700 750 L760 750 L760 706', C.cyan, 'flowC', 9)}
+    ${flow('M760 690 L760 560', C.cyan, 'flowC', 9)}
+    ${flow('M700 540 L672 540', C.cyan, 'flowC', 7)}
+    ${flow('M820 540 L848 540', C.cyan, 'flowC', 7)}
+    ${flow('M512 540 L460 540 L460 250 L360 250 L330 300', C.amberL, 'flowH', 8)}
+    ${flow('M1008 540 L1060 540 L1060 250 L480 250', C.amberL, 'flowH', 8)}
+    ${arrow(700, 750, 'right', C.cyan)}${arrow(760, 600, 'up', C.cyan)}
+    ${arrow(668, 540, 'left', C.cyan)}${arrow(852, 540, 'right', C.cyan)}
+    ${arrow(462, 300, 'up', C.amberL)}${arrow(1060, 300, 'up', C.amberL)}
+    ${arrow(500, 250, 'left', C.amberL)}
+  </g>
+  <g data-at="0.02" data-dx="0" opacity="0">
+    <text class="tg" x="60" y="104">BÖLÜM 07 · SOĞUTMA</text>
+    <text class="hd" x="60" y="140">Isı nereye gidiyor</text>
+  </g>
+  ${callout(265, 645, 'FAN · DEBİ TALEBE GÖRE', 'devir %10 düşerse güç %27 düşer', .18, { side:'right', len:120 })}
+  ${callout(713, 706, 'DELİKLİ PANEL', 'soğuk hava koridora burada girer', .34, { side:'right', len:190 })}
+  ${callout(1060, 420, 'SICAK HAVA DÖNÜŞÜ', 'tavan boşluğundan CRAH’a', .5, { side:'left', len:110 })}
+  ${callout(1255, 78, 'ISI DIŞARIYA', 'hava 12 °C altındayken serbest soğutma', .66, { side:'left', len:130 })}
+  <g data-at="0.8" data-dx="0" opacity="0">
+    <rect x="1140" y="470" width="400" height="290" rx="4" fill="#0A1017" fill-opacity=".85" stroke="#22303F"/>
+    <text class="tg" x="1164" y="500">SOĞUTMA ÖLÇÜMLERİ</text>
+    <text class="lb" x="1164" y="534">Soğuk koridor</text><text class="dg" x="1516" y="534" text-anchor="end">21,0 °C</text>
+    <text class="lb" x="1164" y="566">Sıcak koridor</text><text class="dg" x="1516" y="566" text-anchor="end">36,2 °C</text>
+    <text class="lb" x="1164" y="598">Sıcaklık farkı ΔT</text><text class="dg" x="1516" y="598" text-anchor="end">15,2 K</text>
+    <text class="lb" x="1164" y="630">Bağıl nem</text><text class="dg" x="1516" y="630" text-anchor="end">%45</text>
+    <text class="lb" x="1164" y="662">Atılan ısı</text><text class="dg" x="1516" y="662" text-anchor="end">1,86 MW</text>
+    <text class="lb" x="1164" y="694">Soğutma gücü</text><text class="dg" x="1516" y="694" text-anchor="end">0,41 MW</text>
+    <text class="lb" x="1164" y="732" fill="#E7EEF6">PUE</text><text class="dg" x="1516" y="732" text-anchor="end" font-size="20">1,28</text>
+  </g>`);
+
+  const cold = [...root.querySelectorAll('.flowC')], hot = [...root.querySelectorAll('.flowH')],
+        wIn = [...root.querySelectorAll('.flowW')], wOut = [...root.querySelectorAll('.flowWr')];
+  const cue = cueRig(root);
+  return (p, t) => {
+    const o = (t * 46).toFixed(1);
+    cold.forEach(e => e.setAttribute('stroke-dashoffset', -o));
+    hot.forEach(e => e.setAttribute('stroke-dashoffset', -o));
+    wIn.forEach(e => e.setAttribute('stroke-dashoffset', -(t * 30).toFixed(1)));
+    wOut.forEach(e => e.setAttribute('stroke-dashoffset', (t * 30).toFixed(1)));
+    cue(p);
+  };
+}
+
+/* ================= 8. GÜÇ VE YEDEKLİLİK ================= */
+function buildPwr(root){
+  const NW = 168, NH = 92;
+  const node = (x, y, t1, t2, id) => `<g${id ? ` id="${id}"` : ''}>
+    <rect x="${x}" y="${y}" width="${NW}" height="${NH}" rx="4" fill="#101823" stroke="#2A3744"/>
+    <rect x="${x}" y="${y}" width="${NW}" height="4" fill="#2A3744"/>
+    <text class="lb" x="${x + NW / 2}" y="${y + 40}" text-anchor="middle" font-size="13">${t1}</text>
+    <text class="lbs" x="${x + NW / 2}" y="${y + 62}" text-anchor="middle">${t2}</text></g>`;
+  const bus = (d, id, col) => `<path id="${id}" d="${d}" stroke="${col}" stroke-width="6" fill="none"
+    stroke-linecap="round" stroke-dasharray="18 13"/>`;
+
+  let cells = '';
+  for (let i = 0; i < 6; i++) cells += `<rect x="${852 + i * 46}" y="486" width="38" height="52" rx="2" fill="#131C26" stroke="#233140"/>
+    <rect x="${856 + i * 46}" y="492" width="30" height="6" fill="#2E3E50"/>`;
+
+  root.innerHTML = svgWrap(`
+  <rect width="1600" height="900" fill="#080C12"/>
+  <g id="pwCam">
+    <!-- ana hat -->
+    ${bus('M228 386 L300 386', 'pwB1', C.cyanD)}
+    ${bus('M468 386 L560 386', 'pwB2', C.cyanD)}
+    ${bus('M728 386 L820 386', 'pwB3', C.cyanD)}
+    ${bus('M988 386 L1080 386', 'pwB4', C.cyanD)}
+    ${bus('M1248 366 L1330 366', 'pwB5a', C.cyanD)}
+    ${bus('M1248 406 L1330 406', 'pwB5b', C.amber)}
+    ${bus('M644 480 L644 432', 'pwG', '#243243')}
+    ${bus('M904 432 L904 470', 'pwBat', C.violet)}
+    ${node(60, 340, 'Şebeke', 'iki OG hattı · 34,5 kV', 'pwGrid')}
+    ${node(300, 340, 'Trafo', '2 × 2 MVA · 0,4 kV')}
+    ${node(560, 340, 'ATS', 'otomatik transfer', 'pwAts')}
+    ${node(820, 340, 'UPS', '2N · çevrimiçi', 'pwUps')}
+    ${node(1080, 340, 'Ana pano', 'A ve B kolları')}
+    <g><rect x="1330" y="322" width="200" height="130" rx="4" fill="#0D141C" stroke="#2A3744"/>
+      <text class="lbs" x="1430" y="344" text-anchor="middle">KABİNLER</text>
+      ${[...Array(3)].map((_, i) => `<rect x="${1352 + i * 62}" y="356" width="44" height="78" rx="2" fill="#121A24" stroke="#1E2A36"/>
+        ${[...Array(6)].map((__, j) => `<circle class="ledx" cx="${1360 + i * 62}" cy="${366 + j * 12}" r="2" fill="#3FD07F" style="animation-delay:${((i * 6 + j) * .19).toFixed(2)}s"/>`).join('')}`).join('')}
+    </g>
+    <!-- akü bankı -->
+    <g><rect x="838" y="470" width="290" height="92" rx="4" fill="#0D141C" stroke="#2A3744"/>${cells}
+      <text class="lbs" x="1128" y="462" text-anchor="end">AKÜ BANKI</text>
+      <rect x="1140" y="486" width="14" height="60" rx="3" fill="#141C26"/>
+      <rect id="pwBatFill" x="1140" y="486" width="14" height="60" rx="3" fill="${C.violet}"/>
+      <text class="dg" id="pwBatTxt" x="1172" y="522" font-size="14">%100</text>
+      <text class="lbs" x="838" y="584">tam yükte 8 dakika taşır</text></g>
+    <!-- jeneratör -->
+    <g><rect x="560" y="480" width="168" height="120" rx="4" fill="#0D141C" stroke="#2A3744" id="pwGenBox"/>
+      <text class="lbs" x="644" y="502" text-anchor="middle">JENERATÖR 1,8 MVA</text>
+      <path id="pwRpmArc" d="M596 576 A48 48 0 0 1 692 576" stroke="#22303F" stroke-width="5" fill="none"/>
+      <line id="pwNeedle" x1="644" y1="576" x2="644" y2="536" stroke="${C.amberL}" stroke-width="3"/>
+      <circle cx="644" cy="576" r="4" fill="#2E3E50"/>
+      <text class="dg" id="pwRpm" x="700" y="582" font-size="13">0 d/dk</text>
+      <g id="pwSmoke" opacity="0">
+        <circle cx="756" cy="468" r="9" fill="#5A6A7A" opacity=".5"/>
+        <circle cx="776" cy="444" r="13" fill="#5A6A7A" opacity=".3"/>
+        <circle cx="800" cy="416" r="17" fill="#5A6A7A" opacity=".16"/></g>
+      <rect x="734" y="480" width="12" height="46" fill="#141D28"/></g>
+    <!-- yakıt -->
+    <g><rect x="300" y="500" width="200" height="86" rx="4" fill="#0D141C" stroke="#2A3744"/>
+      <text class="lbs" x="400" y="522" text-anchor="middle">YAKIT TANKI</text>
+      <rect x="320" y="536" width="160" height="16" rx="3" fill="#141C26"/>
+      <rect id="pwFuel" x="320" y="536" width="160" height="16" rx="3" fill="${C.amber}"/>
+      <text class="dg" id="pwFuelTxt" x="400" y="576" text-anchor="middle" font-size="13">48,0 saat</text>
+      <path d="M500 540 L540 540 L540 528" stroke="#243243" stroke-width="3" fill="none"/></g>
+    <!-- durum -->
+    <g id="pwAlarm" opacity="0">
+      <rect x="470" y="150" width="660" height="72" rx="4" fill="#2A1216" stroke="${C.red}" stroke-width="2"/>
+      <text class="lb" x="500" y="182" fill="${C.red}" font-size="15">▲ ŞEBEKE KESİNTİSİ</text>
+      <text class="lbs" x="500" y="204">UPS devraldı · jeneratör başlatma dizisi çalışıyor</text>
+    </g>
+    <g><rect x="1120" y="600" width="410" height="80" rx="4" fill="#0A1017" stroke="#22303F"/>
+      <circle cx="1148" cy="640" r="6" fill="${C.greenL}"/>
+      <text class="lb" x="1166" y="638" font-size="13">KABİNDEKİ CİHAZLAR ÇALIŞIYOR</text>
+      <text class="lbs" x="1166" y="660" id="pwZero">kesinti süresi 0 ms</text></g>
+    <text class="tg" x="60" y="196">BESLEME KAYNAĞI</text>
+    <text class="dg" id="pwSrc" x="60" y="228" font-size="20">ŞEBEKE</text>
+    <text class="tg" x="60" y="268">AŞAMA</text>
+    <text class="dg" id="pwPhase" x="60" y="300" font-size="20">1/4 · NORMAL</text>
+  </g>
+  <g data-at="0.02" data-dx="0" opacity="0">
+    <text class="tg" x="60" y="104">BÖLÜM 08 · GÜÇ YOLU</text>
+    <text class="hd" x="60" y="140">Şebeke gidince ne oluyor</text>
+  </g>`);
+
+  const q = s => root.querySelector(s);
+  const b1 = q('#pwB1'), b2 = q('#pwB2'), b3 = q('#pwB3'), b4 = q('#pwB4'),
+        b5a = q('#pwB5a'), b5b = q('#pwB5b'), bg = q('#pwG'), bb = q('#pwBat');
+  const grid = q('#pwGrid'), ats = q('#pwAts'), alarm = q('#pwAlarm'), smoke = q('#pwSmoke'),
+        needle = q('#pwNeedle'), rpmT = q('#pwRpm'), batF = q('#pwBatFill'), batT = q('#pwBatTxt'),
+        fuel = q('#pwFuel'), fuelT = q('#pwFuelTxt'), src = q('#pwSrc'), ph = q('#pwPhase'),
+        zero = q('#pwZero'), genBox = q('#pwGenBox');
+  const cue = cueRig(root);
+  const live = (el, on, col, off) => {
+    el.setAttribute('stroke', on ? col : '#1C2634');
+    el.setAttribute('opacity', on ? 1 : .55);
+    el.setAttribute('stroke-dashoffset', on ? off : 0);
+  };
+
+  return (p, t) => {
+    const off = -(t * 52).toFixed(1);
+    const ph1 = p < .30, ph2 = p >= .30 && p < .48, ph3 = p >= .48 && p < .66, ph4 = p >= .66;
+    const utility = ph1, genOn = ph4 || (ph3 && p > .58);
+    /* hatlar */
+    live(b1, utility, C.cyanD, off); live(b2, utility, C.cyanD, off);
+    live(bg, genOn, C.amberL, off);
+    live(b3, true, genOn ? C.amberL : utility ? C.cyanD : C.violet, off);
+    live(b4, true, genOn ? C.amberL : utility ? C.cyanD : C.violet, off);
+    live(b5a, true, C.cyanD, off); live(b5b, true, C.amber, off);
+    live(bb, !utility && !genOn, C.violet, off);
+    grid.setAttribute('opacity', utility ? 1 : .45);
+    genBox.setAttribute('stroke', genOn ? C.amberL : '#2A3744');
+    /* alarm */
+    alarm.setAttribute('opacity', ph2 || (ph3 && !genOn) ? (Math.sin(t * 7) > -.4 ? 1 : .45) : 0);
+    /* jeneratör devri */
+    const rpm = ph1 ? 0 : ph2 ? 0 : clamp((p - .48) / .10) * 1500;
+    needle.setAttribute('transform', `rotate(${(-90 + (rpm / 1500) * 180).toFixed(1)} 644 576)`);
+    rpmT.textContent = `${Math.round(rpm)} d/dk`;
+    smoke.setAttribute('opacity', (rpm > 100 && rpm < 1490 ? .9 : rpm >= 1490 ? .35 : 0).toFixed(2));
+    /* akü */
+    const soc = ph1 ? 100 : !genOn ? lerp(100, 96.4, clamp((p - .30) / .28)) : lerp(96.4, 99.6, clamp((p - .66) / .34));
+    batF.setAttribute('height', (60 * soc / 100).toFixed(1));
+    batF.setAttribute('y', (486 + 60 * (1 - soc / 100)).toFixed(1));
+    batT.textContent = '%' + soc.toFixed(1).replace('.', ',');
+    /* yakıt */
+    const fh = genOn ? lerp(48, 47.2, clamp((p - .58) / .42)) : 48;
+    fuel.setAttribute('width', (160 * fh / 48).toFixed(1));
+    fuelT.textContent = fh.toFixed(1).replace('.', ',') + ' saat';
+    /* etiketler */
+    src.textContent = genOn ? 'JENERATÖR' : utility ? 'ŞEBEKE' : 'AKÜ (UPS)';
+    src.setAttribute('fill', genOn ? C.amberL : utility ? C.cyan : C.violet);
+    ats.querySelector('text.lbs').textContent = genOn ? 'jeneratöre aktarıldı' : utility ? 'şebekede' : 'transfer bekliyor';
+    ph.textContent = ph1 ? '1/4 · NORMAL' : ph2 ? '2/4 · KESİNTİ' : ph3 ? '3/4 · JENERATÖR KALKIYOR' : '4/4 · JENERATÖRDE';
+    zero.textContent = ph1 ? 'kesinti süresi 0 ms' : 'UPS geçişi 8 ms · cihazlar fark etmedi';
+    cue(p);
+  };
+}
+
+/* ================= 9. İZLEME MERKEZİ ================= */
+function buildNoc(root){
+  const panel = (x, y, w, h, title, unit) => `
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="#0B1118" stroke="#22303F"/>
+    <text class="lb" x="${x + 18}" y="${y + 28}" font-size="12.5">${title}</text>
+    ${unit ? `<text class="lbs" x="${x + w - 18}" y="${y + 28}" text-anchor="end">${unit}</text>` : ''}
+    <line x1="${x + 18}" y1="${y + 40}" x2="${x + w - 18}" y2="${y + 40}" stroke="#1A2432"/>`;
+
+  /* 2 — kabin başına güç: tek ölçü, tek renk */
+  const kw = [8.4, 11.2, 9.6, 12.4, 7.8, 13.6, 10.1, 9.2, 11.8, 6.9];
+  const bx = 110, by = 432, bw = 380, bh = 126, bmax = 16;
+  let bars = '';
+  kw.forEach((v, i) => {
+    const w = (bw - 9 * 6) / 10, x = bx + i * (w + 6), hh = bh * v / bmax;
+    const top = v === Math.max(...kw);
+    bars += `<rect x="${x.toFixed(1)}" y="${(by + bh - hh).toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}" rx="3" fill="${C.cyanD}" fill-opacity="${top ? 1 : .72}"/>`;
+    if (top) bars += `<text class="dg" x="${(x + w / 2).toFixed(1)}" y="${(by + bh - hh - 8).toFixed(1)}" text-anchor="middle" font-size="12">${v.toString().replace('.', ',')}</text>`;
+  });
+  let bLbl = '';
+  for (let i = 0; i < 10; i++) bLbl += `<text class="lbs" x="${(bx + i * ((bw - 54) / 10 + 6) + (bw - 54) / 20).toFixed(1)}" y="${by + bh + 18}" text-anchor="middle" font-size="9.5">A${i + 1}</text>`;
+
+  /* 5 — alarm listesi: renk + simge + sözcük */
+  const al = [
+    [C.red, '■', 'KRİTİK', 'CRAH 3 fan devri düştü', '11:04'],
+    [C.amberL, '▲', 'UYARI', 'Kabin A6 girişi 26,4 °C', '10:52'],
+    [C.greenL, '●', 'ÇÖZÜLDÜ', 'Leaf 4 bağlantısı döndü', '09:31']
+  ];
+  let alarms = '';
+  al.forEach((a, i) => {
+    const y = 456 + i * 46;
+    alarms += `<rect x="${610}" y="${y - 18}" width="380" height="38" rx="3" fill="#0E151E"/>
+      <text x="628" y="${y + 6}" fill="${a[0]}" font-size="13" style="font-family:var(--mono)">${a[1]}</text>
+      <text class="lbs" x="650" y="${y + 6}" fill="${a[0]}" font-size="10.5">${a[2]}</text>
+      <text class="lb" x="726" y="${y + 6}" font-size="11.5">${a[3]}</text>
+      <text class="lbs" x="1000" y="${y + 6}" text-anchor="end" font-size="10">${a[4]}</text>`;
+  });
+
+  let months = '';
+  for (let i = 0; i < 12; i++) months += `<rect x="${1074 + i * 30}" y="520" width="22" height="${i === 7 ? 22 : 30}" rx="2" fill="${i === 7 ? C.amberL : C.green}" fill-opacity=".8"/>`;
+
+  root.innerHTML = svgWrap(`
+  <rect width="1600" height="900" fill="#070A10"/>
+  <g id="ncCam">
+    <rect x="60" y="70" width="1480" height="560" rx="6" fill="#0A0E15" stroke="#1A2432"/>
+    ${panel(90, 100, 430, 240, 'Koridor sıcaklığı · Salon A', '')}
+    ${panel(590, 100, 430, 240, 'Ağ trafiği · omurga', '')}
+    ${panel(1060, 100, 450, 240, 'PUE · anlık', '')}
+    ${panel(90, 370, 430, 240, 'Kabin başına güç', 'kW')}
+    ${panel(590, 370, 430, 240, 'Açık alarmlar', '3')}
+    ${panel(1060, 370, 450, 240, 'Erişilebilirlik', 'son 12 ay')}
+
+    <!-- 1: çizgi grafik -->
+    <g>
+      ${[18, 22, 26].map((v, i) => `<line x1="110" y1="${300 - i * 60}" x2="500" y2="${300 - i * 60}" stroke="#151E29"/>
+        <text class="lbs" x="104" y="${304 - i * 60}" text-anchor="end" font-size="9.5">${v}</text>`).join('')}
+      <path id="ncLine" fill="none" stroke="${C.cyanD}" stroke-width="2" stroke-linejoin="round"/>
+      <circle id="ncDot" r="4" fill="${C.cyan}" stroke="#0B1118" stroke-width="2"/>
+      <text class="dg" id="ncTemp" x="500" y="128" text-anchor="end" font-size="17">21,4 °C</text>
+    </g>
+    <!-- 2: alan grafik -->
+    <g>
+      <path id="ncArea" fill="${C.violet}" fill-opacity=".16" stroke="none"/>
+      <path id="ncAreaL" fill="none" stroke="${C.violet}" stroke-width="2" stroke-linejoin="round"/>
+      <line x1="610" y1="300" x2="1000" y2="300" stroke="#1A2432"/>
+      <text class="dg" id="ncBw" x="1000" y="128" text-anchor="end" font-size="17">842 Gbps</text>
+      <text class="lbs" x="610" y="318" font-size="9.5">−60 dk</text>
+      <text class="lbs" x="1000" y="318" text-anchor="end" font-size="9.5">şimdi</text>
+    </g>
+    <!-- 3: PUE göstergesi -->
+    <g>
+      <path d="M1140 300 A140 140 0 0 1 1420 300" stroke="#141D28" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <path id="ncPueArc" d="M1140 300 A140 140 0 0 1 1420 300" stroke="${C.green}" stroke-width="16" fill="none"
+        stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440"/>
+      <text class="big" id="ncPue" x="1280" y="288" text-anchor="middle" font-size="54">1,28</text>
+      <text class="lbs" x="1280" y="316" text-anchor="middle">1,0 = tüm enerji cihazlara</text>
+      <text class="lbs" x="1142" y="330" font-size="9.5">1,0</text>
+      <text class="lbs" x="1418" y="330" text-anchor="end" font-size="9.5">2,0</text>
+    </g>
+    <!-- 4: sütun grafik -->
+    <g>${bars}<line x1="110" y1="${by + bh}" x2="490" y2="${by + bh}" stroke="#22303F"/>${bLbl}</g>
+    <!-- 5: alarmlar -->
+    <g>${alarms}</g>
+    <!-- 6: erişilebilirlik -->
+    <g>
+      <text class="big" x="1084" y="478" font-size="50">99,982<tspan font-size="26">%</tspan></text>
+      <text class="lbs" x="1084" y="502">sözleşme hedefi %99,98 · aşıldı</text>
+      ${months}
+      <text class="lbs" x="1074" y="568" font-size="9.5">Oca</text>
+      <text class="lbs" x="1436" y="568" text-anchor="end" font-size="9.5">Ara</text>
+    </g>
+    <!-- operatör masaları -->
+    <rect y="700" width="1600" height="200" fill="#080C12"/>
+    <rect x="180" y="716" width="460" height="14" rx="3" fill="#121A24"/>
+    <rect x="960" y="716" width="460" height="14" rx="3" fill="#121A24"/>
+    ${[260, 380, 500, 1040, 1160, 1280].map(x => `<rect x="${x}" y="660" width="98" height="58" rx="3" fill="#0C1620" stroke="#1E2A36"/>
+      <rect x="${x + 6}" y="666" width="86" height="46" fill="#0E2430" opacity=".9"/>
+      ${[...Array(5)].map((_, j) => `<rect x="${x + 12}" y="${672 + j * 8}" width="${(30 + rnd(x + j) * 50).toFixed(0)}" height="2" fill="${C.cyan}" opacity=".5"/>`).join('')}`).join('')}
+    <path d="M330 900 L330 790 A34 34 0 0 1 398 790 L398 900 Z" fill="#0B1016"/>
+    <circle cx="364" cy="756" r="26" fill="#0B1016"/>
+    <path d="M1120 900 L1120 794 A32 32 0 0 1 1184 794 L1184 900 Z" fill="#0B1016"/>
+    <circle cx="1152" cy="762" r="24" fill="#0B1016"/>
+  </g>
+  <g data-at="0.03" data-dx="0" opacity="0"></g>`);
+
+  const q = s => root.querySelector(s);
+  const line = q('#ncLine'), dot = q('#ncDot'), tmp = q('#ncTemp'),
+        area = q('#ncArea'), areaL = q('#ncAreaL'), bw2 = q('#ncBw'),
+        arc = q('#ncPueArc'), pue = q('#ncPue'), cue = cueRig(root);
+  const N = 62;
+  return (p, t) => {
+    /* sıcaklık: 18–26 °C bandı, tek seri */
+    let d = '', lastY = 0, v = 0;
+    for (let i = 0; i < N; i++){
+      v = 21.4 + wob(i * .34 + t * .55, 3.1) * 1.5;
+      const x = 110 + 390 * i / (N - 1), y = 300 - ((v - 18) / 8) * 120;
+      d += `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`; lastY = y;
+    }
+    line.setAttribute('d', d);
+    dot.setAttribute('cx', 500); dot.setAttribute('cy', lastY.toFixed(1));
+    tmp.textContent = v.toFixed(1).replace('.', ',') + ' °C';
+    /* trafik */
+    let a = '', al2 = '', gb = 0;
+    for (let i = 0; i < N; i++){
+      gb = 820 + wob(i * .42 + t * .8, 8.3) * 190;
+      const x = 610 + 390 * i / (N - 1), y = 300 - (gb / 1200) * 172;
+      al2 += `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+    }
+    a = `M610 300 ` + al2.slice(1) + ` L1000 300 Z`;
+    area.setAttribute('d', a); areaL.setAttribute('d', al2);
+    bw2.textContent = Math.round(gb) + ' Gbps';
+    /* PUE */
+    const pv = 1.28 + Math.sin(t * .5) * .02;
+    arc.setAttribute('stroke-dashoffset', (440 - 440 * clamp((pv - 1) / 1) * .99).toFixed(1));
+    pue.textContent = pv.toFixed(2).replace('.', ',');
+    cue(p);
+  };
+}
+
+/* ================= 10. GERİ ÇEKİLİŞ ================= */
+function buildOut(root){
+  root.innerHTML =
+    `<canvas id="cvO" width="1600" height="900" style="position:absolute;inset:0"></canvas>` +
+    svgWrap(`
+      <g data-at="0.05" data-dx="0" opacity="0">
+        <text class="tg" x="60" y="104">BÖLÜM 10 · TESİSİN TAMAMI</text>
+        <text class="hd" x="60" y="140">Hepsi bir arada</text>
+      </g>
+      <g data-at="0.56" data-dx="0" opacity="0">
+        <rect x="1060" y="470" width="480" height="356" rx="5" fill="#070B11" fill-opacity=".9" stroke="#22303F"/>
+        <text class="tg" x="1086" y="506">DC-01 · ÖZET</text>
+        <text class="lb" x="1086" y="546">Beyaz alan</text><text class="dg" x="1514" y="546" text-anchor="end">2 400 m²</text>
+        <text class="lb" x="1086" y="580">Kabin</text><text class="dg" x="1514" y="580" text-anchor="end">168</text>
+        <text class="lb" x="1086" y="614">Bilişim yükü</text><text class="dg" x="1514" y="614" text-anchor="end">1,86 / 2,0 MW</text>
+        <text class="lb" x="1086" y="648">Güç yedekliliği</text><text class="dg" x="1514" y="648" text-anchor="end">2N</text>
+        <text class="lb" x="1086" y="682">Soğutma yedekliliği</text><text class="dg" x="1514" y="682" text-anchor="end">N+1</text>
+        <text class="lb" x="1086" y="716">PUE (yıllık)</text><text class="dg" x="1514" y="716" text-anchor="end">1,28</text>
+        <text class="lb" x="1086" y="750">Jeneratör yakıtı</text><text class="dg" x="1514" y="750" text-anchor="end">48 saat</text>
+        <text class="lb" x="1086" y="784">Erişilebilirlik</text><text class="dg" x="1514" y="784" text-anchor="end">%99,982</text>
+      </g>`);
+
+  const cv = root.querySelector('#cvO'), g = cv.getContext('2d'), cue = cueRig(root);
+  const zones = [
+    [2, 2, 22, 12, '#131C27', 'BT SALONU A'],
+    [2, 16, 22, 12, '#131C27', 'BT SALONU B'],
+    [26, 2, 9, 8, '#18222E', 'UPS'],
+    [26, 11, 9, 3, '#18222E', 'AKÜ'],
+    [37, 2, 8, 12, '#161F2A', 'SOĞUTMA'],
+    [26, 16, 15, 6, '#161F2A', 'JENERATÖR'],
+    [43, 16, 6, 6, '#161F2A', 'YAKIT'],
+    [26, 24, 9, 4, '#1A2431', 'GİRİŞ'],
+    [37, 24, 12, 4, '#18222E', 'KARGO'],
+    [37, 16, 4, 6, '#1A2431', 'NOC']
+  ];
+  const racks = [];
+  for (const oy of [2, 16]) for (let r = 0; r < 6; r++) for (let i = 0; i < 14; i++)
+    racks.push([3.4 + i * 1.42, oy + 1.4 + r * 1.75, r * 14 + i]);
+
+  return (p, t) => {
+    const k = eIO(clamp(p));
+    const S = lerp(27, 10.5, k), CX0 = lerp(720, 660, k), CY0 = lerp(120, 250, k);
+    const iso = (x, y, z) => [CX0 + (x - y) * .866 * S, CY0 + (x + y) * .5 * S - z * S];
+    const poly = (pts, fill, stroke) => {
+      g.beginPath(); pts.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]));
+      g.closePath(); if (fill){ g.fillStyle = fill; g.fill(); }
+      if (stroke){ g.strokeStyle = stroke; g.lineWidth = 1; g.stroke(); }
+    };
+    g.fillStyle = '#05070C'; g.fillRect(0, 0, 1600, 900);
+    /* bina döşemesi */
+    poly([iso(0, 0, 0), iso(51, 0, 0), iso(51, 30, 0), iso(0, 30, 0)], '#0A1119', '#1D2836');
+    /* bölgeler */
+    for (const [x, y, w, h, col, name] of zones){
+      poly([iso(x, y, 0), iso(x + w, y, 0), iso(x + w, y + h, 0), iso(x, y + h, 0)], col, '#1B2634');
+      const c = iso(x + w / 2, y + h / 2, 0);
+      g.fillStyle = 'rgba(196,212,228,.85)';
+      g.font = `500 ${Math.max(8, S * .42).toFixed(0)}px "IBM Plex Mono", monospace`;
+      g.textAlign = 'center'; g.fillText(name, c[0], c[1]);
+    }
+    /* kabinler */
+    racks.sort((a, b) => (a[0] + a[1]) - (b[0] + b[1]));
+    for (const [x, y, sd] of racks){
+      const w = .92, d = 1.05, hh = 1.45;
+      poly([iso(x + w, y, 0), iso(x + w, y + d, 0), iso(x + w, y + d, hh), iso(x + w, y, hh)], '#1A2431');
+      poly([iso(x, y + d, 0), iso(x + w, y + d, 0), iso(x + w, y + d, hh), iso(x, y + d, hh)], '#141C26');
+      poly([iso(x, y, hh), iso(x + w, y, hh), iso(x + w, y + d, hh), iso(x, y + d, hh)], '#283644');
+      const on = Math.sin(t * (1.6 + rnd(sd) * 4) + sd) > -.2;
+      const c = iso(x + w / 2, y + d / 2, hh);
+      g.fillStyle = on ? 'rgba(63,208,127,.85)' : 'rgba(63,208,127,.22)';
+      g.beginPath(); g.arc(c[0], c[1], Math.max(.9, S * .1), 0, 6.3); g.fill();
+    }
+    /* çatı ekipmanı: chiller sıraları */
+    for (let i = 0; i < 6; i++){
+      const x = 37.5, y = 3 + i * 1.8;
+      poly([iso(x, y, 0), iso(x + 6.5, y, 0), iso(x + 6.5, y + 1.2, 0), iso(x, y + 1.2, 0)], '#16202C', '#22303F');
+    }
+    /* çevre çiti */
+    g.strokeStyle = '#131C26'; g.lineWidth = 1;
+    poly([iso(-4, -4, 0), iso(55, -4, 0), iso(55, 34, 0), iso(-4, 34, 0)], null, '#131C26');
+    const vg = g.createRadialGradient(800, 430, 120, 800, 430, 760);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
+    g.fillStyle = vg; g.fillRect(0, 0, 1600, 900);
+    cue(p);
+  };
+}
+
+/* =========================================================================
+   Oynatıcı motoru
+   ========================================================================= */
+const BUILD = { ext:buildExt, sec:buildSec, aisle:buildAisle, rack:buildRack, net:buildNet,
+                stor:buildStor, cool:buildCool, pwr:buildPwr, noc:buildNoc, out:buildOut };
+const el = {}, upd = {};
+for (const c of CH){ el[c.id] = document.getElementById('sc-' + c.id); upd[c.id] = BUILD[c.id](el[c.id]); }
+
+const D = id => document.getElementById(id);
+const stage = D('stage'), track = D('track'), fill = D('fill'), knob = D('knob'),
+      playBtn = D('play'), playIcon = D('playIcon'), bigplay = D('bigplay'),
+      endcard = D('endcard'), railList = D('railList');
+const ICON_PLAY = 'M8 5v14l11-7z', ICON_PAUSE = 'M7 5h4v14H7zM13 5h4v14h-4z';
+
+let T = 0, playing = false, rate = 1, dirty = true, idx = -1, started = false;
+D('tAll').textContent = mmss(DUR);
+
+/* bölüm rayı ve zaman çizgisi işaretleri */
+railList.innerHTML = CH.map((c, i) => `<li><button type="button" data-i="${i}">
+  <span class="k">${String(i + 1).padStart(2, '0')} · ${mmss(c.t0)} · ${c.d}s</span>
+  <span class="t">${c.t}</span></button></li>`).join('');
+D('rail').insertAdjacentHTML('beforeend',
+  CH.slice(1).map(c => `<div class="tick" style="left:${(c.t0 / DUR * 100).toFixed(2)}%"></div>`).join(''));
+
+function setHud(i){
+  const c = CH[i];
+  D('l3num').textContent = String(i + 1).padStart(2, '0') + ' / ' + CH.length;
+  D('l3ttl').textContent = c.t;
+  D('l3sub').textContent = c.sub;
+  D('l3cap').textContent = c.cap;
+  D('chipTxt').textContent = 'Böl. ' + String(i + 1).padStart(2, '0');
+  [...railList.querySelectorAll('button')].forEach((b, k) =>
+    b.setAttribute('aria-current', k === i ? 'true' : 'false'));
+}
+
+function render(t){
+  CH.forEach((c, i) => {
+    const inn  = clamp((t - (c.t0 - FADE)) / FADE);
+    const out  = i === CH.length - 1 ? 1 : clamp((c.t0 + c.d - t) / FADE);
+    const o = inn * out;
+    el[c.id].style.opacity = o.toFixed(3);
+    if (o > .004) upd[c.id](clamp((t - c.t0) / c.d), t);
+  });
+  let i = CH.findIndex(c => t < c.t0 + c.d); if (i < 0) i = CH.length - 1;
+  if (i !== idx){ idx = i; setHud(i); }
+  const pc = (t / DUR * 100);
+  fill.style.width = pc + '%'; knob.style.left = pc + '%';
+  D('tc').textContent = mmss(t) + ' / ' + mmss(DUR);
+  D('tNow').textContent = mmss(t);
+  track.setAttribute('aria-valuenow', t.toFixed(1));
+  track.setAttribute('aria-valuetext', mmss(t) + ' — ' + CH[i].t);
+}
+track.setAttribute('aria-valuemax', DUR.toFixed(0));
+
+let last = 0;
+function loop(ts){
+  const dt = last ? (ts - last) / 1000 : 0; last = ts;
+  if (playing){
+    T += Math.min(dt, .12) * rate;
+    if (T >= DUR){ T = DUR; setPlay(false); endcard.classList.add('on'); }
+    dirty = true;
+  }
+  if (dirty){ render(T); dirty = false; }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+function setPlay(on){
+  playing = on;
+  stage.classList.toggle('paused', !on);
+  playIcon.setAttribute('d', on ? ICON_PAUSE : ICON_PLAY);
+  playBtn.setAttribute('aria-label', on ? 'Duraklat' : 'Oynat');
+  if (on){ started = true; bigplay.hidden = true; endcard.classList.remove('on'); }
+  dirty = true;
+}
+function seek(t, keep){
+  T = clamp(t, 0, DUR); dirty = true;
+  if (T < DUR) endcard.classList.remove('on');
+  if (!keep && !playing) render(T);
+}
+function toggle(){ if (T >= DUR) seek(0); setPlay(!playing); }
+
+playBtn.addEventListener('click', toggle);
+bigplay.addEventListener('click', toggle);
+stage.addEventListener('click', e => { if (e.target === stage || e.target.closest('.hud')) toggle(); });
+D('again').addEventListener('click', () => { seek(0); setPlay(true); });
+D('back').addEventListener('click', () => seek(T - 5));
+D('fwd').addEventListener('click', () => seek(T + 5));
+
+const RATES = [[.5, '0,5×'], [.75, '0,75×'], [1, '1×'], [1.5, '1,5×'], [2, '2×']];
+let ri = 2;
+D('rate').addEventListener('click', () => {
+  ri = (ri + 1) % RATES.length; rate = RATES[ri][0]; D('rate').textContent = RATES[ri][1];
+});
+
+railList.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  seek(CH[+b.dataset.i].t0 + .01); setPlay(true);
+});
+
+/* zaman çizgisi: tıkla ve sürükle */
+let drag = false;
+const posFromEvent = e => {
+  const r = D('rail').getBoundingClientRect();
+  return clamp((e.clientX - r.left) / r.width) * DUR;
+};
+track.addEventListener('pointerdown', e => { drag = true; track.setPointerCapture(e.pointerId); seek(posFromEvent(e)); });
+track.addEventListener('pointermove', e => { if (drag) seek(posFromEvent(e)); });
+track.addEventListener('pointerup', () => { drag = false; });
+track.addEventListener('keydown', e => {
+  const k = { ArrowLeft:-5, ArrowRight:5, ArrowDown:-5, ArrowUp:5, Home:-1e9, End:1e9 }[e.key];
+  if (k === undefined) return; e.preventDefault();
+  seek(Math.abs(k) > 1e8 ? (k < 0 ? 0 : DUR - .01) : T + k);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.key === ' ' || e.key === 'k'){
+    if (e.target.tagName === 'BUTTON') return;
+    e.preventDefault(); toggle();
+  } else if (e.key === 'ArrowRight' && e.target !== track){ e.preventDefault(); seek(T + 5); }
+  else if (e.key === 'ArrowLeft' && e.target !== track){ e.preventDefault(); seek(T - 5); }
+  else if (e.key === 'n' || e.key === 'N'){ const c = CH.find(c => c.t0 > T + .2); if (c) seek(c.t0 + .01); }
+  else if (e.key === 'p' || e.key === 'P'){
+    const c = [...CH].reverse().find(c => c.t0 < T - 1.2); seek(c ? c.t0 + .01 : 0);
+  }
+});
+
+/* tam ekran (destekleyen tarayıcılarda) */
+D('fs').addEventListener('click', () => {
+  const p = D('player');
+  if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+  else p.requestFullscreen?.().catch(() => {});
+});
+
+/* ---------- salon sesi: fan uğultusu (WebAudio, isteğe bağlı) ---------- */
+let AC = null, hum = null, soundOn = false;
+function buildHum(){
+  const A = new (window.AudioContext || window.webkitAudioContext)();
+  const len = A.sampleRate * 2, buf = A.createBuffer(1, len, A.sampleRate), d = buf.getChannelData(0);
+  let l = 0;
+  for (let i = 0; i < len; i++){ const w = Math.random() * 2 - 1; l = (l + .022 * w) / 1.022; d[i] = l * 3.4; }
+  const src = A.createBufferSource(); src.buffer = buf; src.loop = true;
+  const lp = A.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 400;
+  const bp = A.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1500; bp.Q.value = 1.1;
+  const bpg = A.createGain(); bpg.gain.value = .18;
+  const g = A.createGain(); g.gain.value = 0;
+  src.connect(lp).connect(g);
+  src.connect(bp).connect(bpg).connect(g);
+  const osc = A.createOscillator(); osc.type = 'sawtooth'; osc.frequency.value = 116;
+  const of = A.createBiquadFilter(); of.type = 'lowpass'; of.frequency.value = 820;
+  const og = A.createGain(); og.gain.value = .014;
+  osc.connect(of).connect(og).connect(g);
+  g.connect(A.destination); src.start(); osc.start();
+  AC = A; hum = g;
+}
+D('sound').addEventListener('click', () => {
+  try {
+    if (!AC) buildHum();
+    AC.resume?.();
+    soundOn = !soundOn;
+    hum.gain.cancelScheduledValues(AC.currentTime);
+    hum.gain.linearRampToValueAtTime(soundOn ? .5 : 0, AC.currentTime + (soundOn ? 1.1 : .5));
+    D('sound').setAttribute('aria-pressed', String(soundOn));
+  } catch (err){ D('sound').disabled = true; }
+});
+
+/* ilk kare: sayfa yüklendiğinde sahne 1 durur halde görünür */
+setHud(0);
+render(0);
+</script>
+</body>
+</html>
