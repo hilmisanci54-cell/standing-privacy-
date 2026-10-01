@@ -1,0 +1,17 @@
+{
+  "name": "son-sefer-kaydedici",
+  "private": true,
+  "type": "module",
+  "description": "Son Sefer: FastH3 ile 64 klibi sırayla üretip ayrı dosyalara kaydeder.",
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "esbuild src/app.mjs --bundle --format=esm --platform=browser --target=es2022 --define:process.env.NODE_ENV='\"production\"' --minify --outfile=public/app.js && cp node_modules/@reactor-team/js-sdk/dist/wasm/reactor_wasm_bg.wasm public/"
+  },
+  "devDependencies": {
+    "@reactor-models/fast-h3": "1.7.2",
+    "@reactor-team/js-sdk": "3.0.2",
+    "esbuild": "^0.25.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
