@@ -1,0 +1,5 @@
+cikti/
+kartlar/.*.html
+sesler/*
+!sesler/.gitkeep
+__pycache__/
