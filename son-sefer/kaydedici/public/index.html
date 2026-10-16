@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Son Sefer · Kaydedici</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div>
+    <p class="eyebrow">FastH3 · reactor/fast-h3</p>
+    <h1>Son Sefer <span>kaydedici</span></h1>
+  </div>
+  <div class="states">
+    <p id="key-state" data-ok="false">…</p>
+    <p id="frames-state" data-ok="false">…</p>
+  </div>
+</header>
+
+<main>
+  <section class="stage">
+    <video id="preview" muted playsinline autoplay></video>
+    <p id="meters">Bağlı değil</p>
+    <div class="controls">
+      <button id="btn-test" class="primary-outline">1 · Test: 1-04 + 1-06</button>
+      <button id="btn-run" class="primary">2 · Seçili sahneleri üret</button>
+      <button id="btn-session" disabled>Oturumun tamamını kaydet</button>
+      <button id="btn-close" disabled>Oturumu kapat</button>
+    </div>
+    <fieldset id="scenes"><legend>Sahneler</legend></fieldset>
+    <p class="hint">Aynı oturumda kaldığınız sürece her klip yeniden üretilebilir. Oturumu kapatınca
+      klip geçmişi silinir; o zaman bir sahneyi yeniden açmak için baştan, açılış karesinden başlamak gerekir.</p>
+    <div id="log" aria-live="polite"></div>
+  </section>
+  <section id="clips"></section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

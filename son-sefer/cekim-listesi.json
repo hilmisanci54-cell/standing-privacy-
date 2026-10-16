@@ -1,0 +1,597 @@
+{
+ "title": "Son Sefer",
+ "model": "reactor/fast-h3",
+ "session": {
+  "aspect": "16:9",
+  "flush_on_clip_end": false,
+  "autoplay": true
+ },
+ "scenes": {
+  "1": "İç. Küçük bar, gece",
+  "2": "Dış. Bar önü, gece",
+  "3": "Dış. Sessiz sokak, gece",
+  "4": "İç. Ece'nin dairesi, gece",
+  "5": "İç. Ece'nin dairesi, sabah",
+  "6": "İç. Ece'nin mutfağı, sabah",
+  "7": "İç. Ece'nin antresi, sabah",
+  "8": "Apartman asansörü / antre, sabah"
+ },
+ "clips": [
+  {
+   "id": "1-01",
+   "scene": 1,
+   "seconds": 10,
+   "starting_frame": "bar.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "A small, dim Istanbul neighborhood bar late at night: dark wood counter, amber pendant lights, shelves of bottles, light rain streaking the front window, the last customers putting on their coats and leaving. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) sits alone at the end of the counter, slowly turning the ice at the bottom of his glass. A few seats down, Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) reads a message on her phone, then switches the screen off. Slow push-in from a wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, glasses clinking, low murmur of departing customers. Music: none. SFX: ice turning in a glass."
+  },
+  {
+   "id": "1-02",
+   "scene": 1,
+   "seconds": 9,
+   "starting_frame": null,
+   "continue_from": "1-01",
+   "test": false,
+   "prompt": "Hard cut to a medium shot at the dark wood counter of a small, dim Istanbul bar late at night, amber pendant lights, rain on the window. The bartender (man in his 50s, short grey beard, white shirt, black apron) picks up the empty glass in front of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater). S3 (the bartender, gruff friendly voice, in Turkish): \"Son tur. Bir şey alıyor musun?\" Deniz pauses, thinking, and glances down the counter toward Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater), who catches his look. Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, glasses clinking, low murmur of departing customers. Music: none."
+  },
+  {
+   "id": "1-03",
+   "scene": 1,
+   "seconds": 8,
+   "starting_frame": null,
+   "continue_from": "1-02",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) at the dark wood counter of a small, dim Istanbul bar late at night, amber light on his face, rain-streaked window behind him. S1 (Deniz, calm low voice with dry humor, in Turkish): \"Bir su. Büyük kararlar için geç oldu.\" The bartender (man in his 50s, short grey beard, white shirt, black apron) nods and walks out of frame. Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, a glass set down, low murmur. Music: none."
+  },
+  {
+   "id": "1-04",
+   "scene": 1,
+   "seconds": 8,
+   "starting_frame": null,
+   "continue_from": "1-03",
+   "test": true,
+   "prompt": "Hard cut to a medium two-shot at the dark wood counter of a small, dim Istanbul bar late at night, amber pendant lights, rain on the window. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) slides along the counter and sits down next to Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater), amused. S2 (Ece, warm clear voice, teasing, in Turkish): \"Su mu? Büyük kararları sabaha bırakıyorsun yani?\" Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, glasses clinking, low murmur. Music: none. SFX: a bar stool scraping."
+  },
+  {
+   "id": "1-05",
+   "scene": 1,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "1-04",
+   "test": false,
+   "prompt": "Hard cut to an over-the-shoulder shot from behind Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) toward Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) at the dark wood counter of a small, dim Istanbul bar late at night, amber pendant lights, rain on the window. S1 (Deniz, calm low voice, thoughtful, in Turkish): \"Hayır. Sabaha bırakınca karar olmaktan çıkıyorlar. Sadece yapılması gereken şey oluyorlar.\" Static over-the-shoulder medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, low murmur, a glass clinking. Music: none."
+  },
+  {
+   "id": "1-06",
+   "scene": 1,
+   "seconds": 9,
+   "starting_frame": null,
+   "continue_from": "1-05",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) at the dark wood counter of a small, dim Istanbul bar late at night, amber light on her face. S2 (Ece, warm voice, half-smiling, in Turkish): \"Bu cümle ya çok akıllıca ya da çok kaçamak.\" Off-camera, S1 (Deniz, calm low voice, in Turkish): \"İkisi birden olabiliyor.\" Ece smiles. Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, low murmur. Music: none."
+  },
+  {
+   "id": "1-07",
+   "scene": 1,
+   "seconds": 9,
+   "starting_frame": null,
+   "continue_from": "1-06",
+   "test": false,
+   "prompt": "Hard cut to a medium two-shot at the dark wood counter of a small, dim Istanbul bar late at night, amber pendant lights, rain on the window. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) points at the glass of water in front of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater), then lifts her own glass of soda. S2 (Ece, warm clear voice, light, in Turkish): \"Benimki de soda. Ben de bu gece hayatımı değiştirmeye gelmedim.\" Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, low murmur. Music: none. SFX: fizz of soda, glass on wood."
+  },
+  {
+   "id": "1-08",
+   "scene": 1,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "1-07",
+   "test": false,
+   "prompt": "Hard cut to a side-profile two-shot of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) and Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) facing each other at the dark wood counter of a small, dim Istanbul bar late at night, amber pendant lights. S1 (Deniz, calm low voice, dry, in Turkish): \"İyi. Benim hayatım zaten değişiklik kabul etmiyor.\" S2 (Ece, warm voice, curious, in Turkish): \"Bunu hayatın mı söyledi, sen mi?\" Static profile two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, the bar going quiet. Music: none."
+  },
+  {
+   "id": "1-09",
+   "scene": 1,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "1-08",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) at the dark wood counter of a small, dim Istanbul bar late at night, amber light on his face. He does not answer for a moment, caught off guard. S1 (Deniz, quiet low voice, in Turkish): \"Ben. Hayat henüz itiraz etmedi.\" On the counter beside the hand of Ece (Turkish woman, early 30s, small silver hoop earrings, dark red knit sweater cuff visible), her phone vibrates; she does not look at it. Slow push-in to a close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, near silence. Music: none. SFX: a phone buzzing on wood."
+  },
+  {
+   "id": "1-10",
+   "scene": 1,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "1-09",
+   "test": false,
+   "prompt": "Hard cut to a medium two-shot at the dark wood counter of a small, dim Istanbul bar late at night, amber pendant lights, the room nearly empty, rain on the window. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) talk easily. S2 (Ece, warm clear voice, in Turkish): \"Arkadaşlarım gitti. Senin?\" S1 (Deniz, calm low voice, in Turkish): \"Ben yalnız geldim.\" S2 (Ece, surprised, in Turkish): \"İnsan tek başına bara gelir mi?\" Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, chairs being stacked in the back. Music: none."
+  },
+  {
+   "id": "1-11",
+   "scene": 1,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "1-10",
+   "test": false,
+   "prompt": "Hard cut to a closer two-shot over the dark wood counter of a small, dim Istanbul bar late at night, amber pendant lights, rain on the window. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) looks at Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater). S1 (Deniz, calm low voice, honest, in Turkish): \"Gelir. Bazen konuşacak birini bulmak daha kolay oluyor.\" A short silence; both smile faintly at having said it. Static close two-shot, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, a near-empty room. Music: none."
+  },
+  {
+   "id": "1-12",
+   "scene": 1,
+   "seconds": 8,
+   "starting_frame": null,
+   "continue_from": "1-11",
+   "test": false,
+   "prompt": "Hard cut to a tight two-shot at the dark wood counter of a small, dim Istanbul bar late at night, amber pendant light between them, rain on the window. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) turns toward Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater). S2 (Ece, warm, simple, in Turkish): \"Ben Ece.\" S1 (Deniz, calm low voice, in Turkish): \"Deniz.\" They do not shake hands; they only hold each other's gaze for a beat. Static tight two-shot, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: rain on the window, the bar silent. Music: none."
+  },
+  {
+   "id": "2-01",
+   "scene": 2,
+   "seconds": 10,
+   "starting_frame": "bar-onu.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "A narrow Istanbul side street at night just outside a small bar, light rain easing off, wet cobblestones gleaming under yellow streetlamps, warm light spilling from the bar door. The door opens and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) and Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) step out together. S2 (Ece, warm clear voice, in Turkish): \"Taksi çağıracağım. Sen?\" S1 (Deniz, calm low voice, in Turkish): \"Yürürüm. Ev yakın.\" Static medium wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: dripping gutters, light rain fading, a distant car on a wet road. Music: none. SFX: bar door closing behind them."
+  },
+  {
+   "id": "2-02",
+   "scene": 2,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "2-01",
+   "test": false,
+   "prompt": "Hard cut to a medium close-up of Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) under a yellow streetlamp on a wet cobblestone Istanbul side street at night, light rain almost stopped. S2 (Ece, warm voice, lightly suggestive, in Turkish): \"Benimki de yakın sayılır. Şehrin ölçüsüne göre.\" Beside her, Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) looks at her, trying to read the invitation without assuming. Static medium close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: dripping gutters, distant traffic hiss. Music: none."
+  },
+  {
+   "id": "2-03",
+   "scene": 2,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "2-02",
+   "test": false,
+   "prompt": "Hard cut to a wide shot of a narrow Istanbul side street at night, wet cobblestones gleaming under yellow streetlamps, the rain has stopped. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) and Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) stand facing each other. S1 (Deniz, calm low voice, careful, in Turkish): \"Biraz daha yürümek ister misin?\" S2 (Ece, warm, simple, in Turkish): \"İsterim.\" They start walking side by side down the street, a comfortable distance between them. Slow tracking shot from behind, wide. Naturalistic indie film look, 35mm grain. Soundscape: water dripping, quiet street. Music: none. SFX: footsteps on wet stone."
+  },
+  {
+   "id": "3-01",
+   "scene": 3,
+   "seconds": 10,
+   "starting_frame": "sokak.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "A quiet, narrow Istanbul street at night, small shops with their metal shutters down, old apartment buildings, wet pavement reflecting the streetlamps. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) walk side by side, their steps slowly falling into the same rhythm. S2 (Ece, warm curious voice, in Turkish): \"Ne iş yapıyorsun, Deniz?\" S1 (Deniz, calm low voice, dry, in Turkish): \"Mimarım. İnsanların hiç kullanmayacağı odaları çiziyorum.\" Slow side tracking shot, medium, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: the engine of a distant last bus, dripping water. Music: none. SFX: their footsteps on wet pavement."
+  },
+  {
+   "id": "3-02",
+   "scene": 3,
+   "seconds": 13,
+   "starting_frame": null,
+   "continue_from": "3-01",
+   "test": false,
+   "prompt": "Hard cut to a frontal medium two-shot walking toward the camera on a quiet, narrow Istanbul street at night, shuttered shops, wet pavement reflecting streetlamps. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) walk side by side. S2 (Ece, in Turkish): \"Nasıl yani?\" S1 (Deniz, calm low voice, explaining with a small smile, in Turkish): \"Evlerde hep bir oda oluyor. Çalışma odası deniyor, sonra ütü masası ve kullanılmış valizler giriyor. Ben o odaları çiziyorum.\" Slow backward dolly ahead of them, medium two-shot. Naturalistic indie film look, 35mm grain. Soundscape: quiet street, dripping gutters. Music: none. SFX: footsteps."
+  },
+  {
+   "id": "3-03",
+   "scene": 3,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "3-02",
+   "test": false,
+   "prompt": "Hard cut to a side tracking medium shot on a quiet, narrow Istanbul street at night, shuttered shops, old apartment buildings, wet pavement. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) walks beside Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater). S2 (Ece, warm voice, amused, in Turkish): \"Ben editörüm. İnsanların yazdığı şeylerden çıkarmaları gereken cümleleri buluyorum.\" S1 (Deniz, calm low voice, half joking, in Turkish): \"Beni de düzenler misin?\" Slow side tracking shot, medium, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: distant traffic, dripping water. Music: none. SFX: footsteps."
+  },
+  {
+   "id": "3-04",
+   "scene": 3,
+   "seconds": 11,
+   "starting_frame": null,
+   "continue_from": "3-03",
+   "test": false,
+   "prompt": "Hard cut to a close two-shot of Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) walking slowly on a quiet Istanbul street at night, streetlamp light passing over their faces. S2 (Ece, warm voice, in Turkish): \"Önce metni görmem lazım.\" S1 (Deniz, calm low voice, in Turkish): \"Kısa bir metin.\" S2 (Ece, softer, in Turkish): \"Kısa metinler daha zor. Her kelimenin hesabı var.\" Handheld walking close two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet night street. Music: none. SFX: footsteps slowing."
+  },
+  {
+   "id": "3-05",
+   "scene": 3,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "3-04",
+   "test": false,
+   "prompt": "Hard cut to a wide shot in front of the entrance of an old Istanbul apartment building at night, wooden double door, a dim light above it, wet pavement. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, beige trench coat over a dark red knit sweater) and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) stop at the door; both realize it is her building and fall silent. S2 (Ece, warm voice, slightly unsure, in Turkish): \"Yukarı çıkmak ister misin? Kahve var. Çay da olabilir. Evde ne olduğuna bağlı.\" Static wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: a quiet street, water dripping from a balcony. Music: none."
+  },
+  {
+   "id": "3-06",
+   "scene": 3,
+   "seconds": 8,
+   "starting_frame": null,
+   "continue_from": "3-05",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) in front of an old Istanbul apartment door at night, dim light above. A faint smile crosses his face. S1 (Deniz, calm low voice, in Turkish): \"Kahve iyi olur.\" Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, beige trench coat) unlocks the door; Deniz waits for her to go in first. Static close-up, then the door opening in soft focus behind. Naturalistic indie film look, 35mm grain. Soundscape: quiet street. Music: none. SFX: keys, the heavy door creaking open."
+  },
+  {
+   "id": "4-01",
+   "scene": 4,
+   "seconds": 11,
+   "starting_frame": "daire-gece.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "Ece's small, lived-in Istanbul apartment at night: overflowing bookshelves, an unfolded knit blanket on an armchair, a half-eaten apple on a small wooden table, an open kitchen corner, a rain-dark window. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater, black jeans) switches on a warm floor lamp. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater, dark jeans) stands just inside the front door, looking around. S2 (Ece, warm voice, a little self-conscious, in Turkish): \"Dağınıklığı görmezden gelebilirsin.\" S1 (Deniz, calm low voice, gentle humor, in Turkish): \"Ben mimarım. Dağınıklığın planını çıkarırım.\" Static medium wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, a fridge hum. Music: none. SFX: lamp switch click."
+  },
+  {
+   "id": "4-02",
+   "scene": 4,
+   "seconds": 9,
+   "starting_frame": null,
+   "continue_from": "4-01",
+   "test": false,
+   "prompt": "Hard cut to a medium shot by the front door of a small, lived-in Istanbul apartment at night, warm lamp light, bookshelves behind. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater, black jeans) walks past toward the open kitchen corner. S2 (Ece, warm voice, in Turkish): \"Rahat ol. Ayakkabılarını çıkarabilirsin.\" Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater, dark jeans) bends down and takes off his shoes. Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, a fridge hum. Music: none. SFX: shoes set down on a mat."
+  },
+  {
+   "id": "4-03",
+   "scene": 4,
+   "seconds": 11,
+   "starting_frame": null,
+   "continue_from": "4-02",
+   "test": false,
+   "prompt": "Hard cut to a medium shot of the open kitchen corner of a small Istanbul apartment at night, warm lamp light from the living room, a stovetop moka pot. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater, black jeans) prepares coffee, glancing back over her shoulder. S2 (Ece, in Turkish): \"Şeker?\" Off-camera, S1 (Deniz, calm low voice, in Turkish): \"Yok.\" S2 (Ece, teasing, in Turkish): \"Tabii. Büyük karar almayan adam şekersiz kahve içer.\" Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window. Music: none. SFX: coffee bubbling, a spoon against a cup."
+  },
+  {
+   "id": "4-04",
+   "scene": 4,
+   "seconds": 7,
+   "starting_frame": null,
+   "continue_from": "4-03",
+   "test": false,
+   "prompt": "Hard cut to a medium shot of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater, dark jeans) in socks, leaning against a bookshelf in a small, lived-in Istanbul apartment at night, warm lamp light. S1 (Deniz, calm low voice, amused, in Turkish): \"Bana dair bir teori kurmuşsun.\" Off-camera, S2 (Ece, warm voice, in Turkish): \"Henüz taslak.\" Deniz smiles. Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, coffee bubbling. Music: none."
+  },
+  {
+   "id": "4-05",
+   "scene": 4,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "4-04",
+   "test": false,
+   "prompt": "Hard cut to a wide shot of a small wooden table in a lived-in Istanbul apartment at night, a half-eaten apple on it, warm floor lamp, rain-dark window, bookshelves behind. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater, black jeans) and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater, dark jeans) sit across from each other with cups of coffee. A comfortable silence that both are aware of. S1 (Deniz, calm low voice, in Turkish): \"Beni tanımadığın hâlde eve çağırdın.\" Static wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, a clock ticking. Music: none. SFX: cup set on saucer."
+  },
+  {
+   "id": "4-06",
+   "scene": 4,
+   "seconds": 11,
+   "starting_frame": null,
+   "continue_from": "4-05",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater) at a small wooden table in a lived-in Istanbul apartment at night, warm lamp light on her face, coffee cup in her hands. S2 (Ece, warm, sincere voice, in Turkish): \"Seni tanımadığımı biliyorum. Bu daha iyi. Tanıdığımı sanıp yanlış çıkarmaktan iyidir.\" In the foreground, out of focus, Deniz sets his cup down on the table. Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window. Music: none. SFX: cup on wood."
+  },
+  {
+   "id": "4-07",
+   "scene": 4,
+   "seconds": 8,
+   "starting_frame": null,
+   "continue_from": "4-06",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater) at a small wooden table in a lived-in Istanbul apartment at night, warm lamp light on his face. S1 (Deniz, calm low voice, careful, in Turkish): \"Bir şey bekliyor musun?\" He holds her gaze. Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, near silence. Music: none."
+  },
+  {
+   "id": "4-08",
+   "scene": 4,
+   "seconds": 11,
+   "starting_frame": null,
+   "continue_from": "4-07",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater) at a small wooden table in a lived-in Istanbul apartment at night, warm lamp light. She looks straight at him. S2 (Ece, soft but clear voice, in Turkish): \"Senden bir şey beklemiyorum. Ama ne istediğimi bilmek istiyorum. Senin de bilmeni.\" Slow push-in to a tighter close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window. Music: none."
+  },
+  {
+   "id": "4-09",
+   "scene": 4,
+   "seconds": 9,
+   "starting_frame": null,
+   "continue_from": "4-08",
+   "test": false,
+   "prompt": "Hard cut to a side-profile two-shot across a small wooden table in a lived-in Istanbul apartment at night, warm lamp light, coffee cups between them. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater) and Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater) face each other. S1 (Deniz, calm low voice, in Turkish): \"Peki ne istiyorsun?\" S2 (Ece, in Turkish): \"Şu an mı?\" Deniz nods. Static profile two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window. Music: none."
+  },
+  {
+   "id": "4-10",
+   "scene": 4,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "4-09",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater) at a small wooden table in a lived-in Istanbul apartment at night, warm lamp light. S2 (Ece, soft, honest voice, in Turkish): \"Biraz daha burada kalmanı. Gerisi için söz vermeni değil.\" A silence. The camera tilts down to the table, where the fingertips of Deniz (grey crewneck sweater cuff) touch a small coffee stain on the wood. Static close-up, then a slow tilt down to the table. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, a clock ticking. Music: none."
+  },
+  {
+   "id": "4-11",
+   "scene": 4,
+   "seconds": 7,
+   "starting_frame": null,
+   "continue_from": "4-10",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater) at a small wooden table in a lived-in Istanbul apartment at night, warm lamp light on his face. He looks up from the table at her. S1 (Deniz, quiet low voice, in Turkish): \"Kalabilirim.\" Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, near silence. Music: none."
+  },
+  {
+   "id": "4-12",
+   "scene": 4,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "4-11",
+   "test": false,
+   "prompt": "Hard cut to an overhead close-up of the middle of a small wooden table in a lived-in Istanbul apartment at night, warm lamp light, two coffee cups, a half-eaten apple. The hand of Ece (dark red knit sweater cuff, a thin silver ring) slides to the center of the table. The hand of Deniz (grey crewneck sweater cuff) moves toward it. Their fingertips touch, then Ece takes his hand, and he holds hers back. Static overhead close-up. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window, two people breathing quietly. Music: none."
+  },
+  {
+   "id": "4-13",
+   "scene": 4,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "4-12",
+   "test": false,
+   "prompt": "Hard cut to a tight two-shot across a small wooden table in a lived-in Istanbul apartment at night, warm lamp light, their hands joined between them. Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater) keeps her eyes on his face, unhurried. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater) leans in. A short, careful kiss, then both pause, foreheads close. S2 (Ece, whispering, in Turkish): \"İyi misin?\" S1 (Deniz, quiet, in Turkish): \"Evet. Sen?\" S2 (Ece, in Turkish): \"Evet.\" Static tight two-shot, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: soft rain on the window. Music: none."
+  },
+  {
+   "id": "4-14",
+   "scene": 4,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "4-13",
+   "test": false,
+   "prompt": "Hard cut to a close-up, warm and dim, in a lived-in Istanbul apartment at night: Ece (Turkish woman, early 30s, shoulder-length wavy chestnut hair, small silver hoop earrings, dark red knit sweater) and Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, grey crewneck sweater) kiss again, more relaxed and longer, his hand resting on her cheek, her hand on his. A floor lamp just out of frame leaves a soft glow on their faces. Very slow push-in, close-up, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: the rain on the window slowly fading away. Music: none."
+  },
+  {
+   "id": "5-01",
+   "scene": 5,
+   "seconds": 10,
+   "starting_frame": "daire-sabah.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "Ece's small, lived-in Istanbul apartment in the morning: soft daylight through the window, overflowing bookshelves, a sofa, an open kitchen corner. Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater, dark jeans) wakes up on the sofa, a knit blanket over his shoulder. In the background, Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) takes two cups out of a cupboard. As he opens his eyes, she turns and smiles. S2 (Ece, warm morning voice, in Turkish): \"Günaydın.\" Static medium wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: a distant garbage truck in the street, morning birds. Music: none. SFX: cups on a counter."
+  },
+  {
+   "id": "5-02",
+   "scene": 5,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "5-01",
+   "test": false,
+   "prompt": "Hard cut to a medium shot of Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater, dark jeans) on a sofa in a small, lived-in Istanbul apartment in the morning, soft daylight, a knit blanket slipping off his shoulder. S1 (Deniz, sleepy low voice, in Turkish): \"Bu hangi saat dilimi?\" Off-camera, S2 (Ece, warm voice, amused, in Turkish): \"Kahveyi hak edecek kadar geç.\" Deniz sits up. Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: morning street sounds through the window, birds. Music: none."
+  },
+  {
+   "id": "5-03",
+   "scene": 5,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "5-02",
+   "test": false,
+   "prompt": "Hard cut to a medium two-shot by a sofa in a small, lived-in Istanbul apartment in the morning, soft daylight, bookshelves behind. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) hands a cup of coffee to Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater, dark jeans), who sits on the sofa. S1 (Deniz, low voice, in Turkish): \"Bütün gece burada mı uyudum?\" S2 (Ece, warm, dry humor, in Turkish): \"Bir ara yatağa geçelim dedin. Sonra koltukta uyuyakaldın.\" Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: morning birds, a distant garbage truck. Music: none."
+  },
+  {
+   "id": "5-04",
+   "scene": 5,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "5-03",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) on a sofa in a small Istanbul apartment in the morning, soft daylight on his face, holding a coffee cup. S1 (Deniz, dry, in Turkish): \"Romantik.\" Off-camera, S2 (Ece, warm, playful, in Turkish): \"Çok. Neredeyse bir şiir yazdım.\" Deniz smiles and takes a sip of his coffee. Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: morning birds. Music: none. SFX: a sip of coffee."
+  },
+  {
+   "id": "5-05",
+   "scene": 5,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "5-04",
+   "test": false,
+   "prompt": "Hard cut to a side-profile two-shot on a sofa in a small, lived-in Istanbul apartment in the morning, soft daylight. Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) and Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) sit with coffee cups. S1 (Deniz, quiet low voice, in Turkish): \"Geceyi hatırlıyorum.\" S2 (Ece, softly, in Turkish): \"Ben de.\" A small silence; Ece searches his eyes for something but does not press him. Static profile two-shot, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: morning birds, quiet street. Music: none."
+  },
+  {
+   "id": "6-01",
+   "scene": 6,
+   "seconds": 12,
+   "starting_frame": "mutfak.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "Ece's small Istanbul kitchen in the morning: white tiles, a narrow counter with a toaster, a small wooden table by the window, soft daylight. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) puts bread into the toaster at the counter. Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) sits at the table, holding his coffee cup with both hands. S2 (Ece, warm, casual voice, in Turkish): \"Bugün planın var mı?\" S1 (Deniz, calm low voice, in Turkish): \"Bir toplantı. Sonra bir müşteriyle proje konuşacağım.\" Static medium wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street through the window, a fridge hum. Music: none. SFX: toaster lever pushed down."
+  },
+  {
+   "id": "6-02",
+   "scene": 6,
+   "seconds": 13,
+   "starting_frame": null,
+   "continue_from": "6-01",
+   "test": false,
+   "prompt": "Hard cut to a medium shot of Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) leaning against the counter of a small white-tiled Istanbul kitchen in the morning, soft daylight, a toaster beside her. S2 (Ece, warm voice, in Turkish): \"Benim de öğlene kadar teslim etmem gereken bir kitap var. Baş karakteri kimseye güvenmiyor.\" Off-camera, S1 (Deniz, calm low voice, in Turkish): \"Umarım sonu iyi bitiyordur.\" Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street, a fridge hum. Music: none. SFX: toaster ticking."
+  },
+  {
+   "id": "6-03",
+   "scene": 6,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "6-02",
+   "test": false,
+   "prompt": "Hard cut to a medium two-shot in a small white-tiled Istanbul kitchen in the morning, soft daylight, a small wooden table by the window. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) looks at Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater). S2 (Ece, teasing but pointed, in Turkish): \"Editörüm olduğum için bunu soruyorsun, değil mi?\" Deniz does not answer. Ece puts the toast on a plate and comes to sit at the table. Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none. SFX: plate on wood, chair pulled out."
+  },
+  {
+   "id": "6-04",
+   "scene": 6,
+   "seconds": 9,
+   "starting_frame": null,
+   "continue_from": "6-03",
+   "test": false,
+   "prompt": "Hard cut to a side-profile two-shot at a small wooden table by the window in a white-tiled Istanbul kitchen in the morning, soft daylight, toast and coffee cups between them. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) and Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) sit facing each other. S2 (Ece, warm, simple, in Turkish): \"Deniz, dün gece güzeldi.\" S1 (Deniz, quiet low voice, in Turkish): \"Evet. Güzeldi.\" Static profile two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none."
+  },
+  {
+   "id": "6-05",
+   "scene": 6,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "6-04",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) at a small wooden table by the window in an Istanbul kitchen in the morning, soft daylight on her face. S2 (Ece, calm, sincere voice, in Turkish): \"Bunu söylemek için bir şey talep etmiyorum. Sadece sabah olunca ikimiz de dün geceyi yok saymak zorunda değiliz.\" Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street, a fridge hum. Music: none."
+  },
+  {
+   "id": "6-06",
+   "scene": 6,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "6-05",
+   "test": false,
+   "prompt": "Hard cut to a medium close-up of Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) at a small wooden table by the window in an Istanbul kitchen in the morning, soft daylight. He sets his coffee cup down. S1 (Deniz, low voice, in Turkish): \"Ben yok saymıyorum.\" Off-camera, S2 (Ece, calm, direct, in Turkish): \"Peki. O zaman ne yapıyorsun?\" Static medium close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none. SFX: cup on wood."
+  },
+  {
+   "id": "6-07",
+   "scene": 6,
+   "seconds": 14,
+   "starting_frame": null,
+   "continue_from": "6-06",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) at a small wooden table in an Istanbul kitchen in the morning, soft daylight on his face. He searches for the answer, speaking slowly with pauses. S1 (Deniz, low, honest voice, in Turkish): \"Bir süredir biriyle yakınlaşınca, devamını getirmem gerekiyormuş gibi hissediyorum. Sonra yapamıyorum. En baştan dürüst olursam kimseyi üzmem sanıyorum.\" Very slow push-in, close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street, a fridge hum. Music: none."
+  },
+  {
+   "id": "6-08",
+   "scene": 6,
+   "seconds": 8,
+   "starting_frame": null,
+   "continue_from": "6-07",
+   "test": false,
+   "prompt": "Hard cut to an over-the-shoulder shot from behind Deniz toward Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) at a small wooden table in an Istanbul kitchen in the morning, soft daylight. S2 (Ece, calm, gently cutting, in Turkish): \"Bu çok iyi niyetli bir kaçış cümlesi.\" S1 (Deniz, quiet, in Turkish): \"Biliyorum.\" Static over-the-shoulder medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none."
+  },
+  {
+   "id": "6-09",
+   "scene": 6,
+   "seconds": 13,
+   "starting_frame": null,
+   "continue_from": "6-08",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) at a small wooden table in an Istanbul kitchen in the morning, soft daylight. S2 (Ece, calm, clear voice, in Turkish): \"İnsanları üzmemek için daha en baştan kapıyı kapatıyorsun. Sonra da kimse içeri girmedi diye rahatlıyorsun.\" Off-camera, S1 (Deniz, very quiet, in Turkish): \"Olabilir.\" Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none."
+  },
+  {
+   "id": "6-10",
+   "scene": 6,
+   "seconds": 14,
+   "starting_frame": null,
+   "continue_from": "6-09",
+   "test": false,
+   "prompt": "Hard cut to a medium two-shot at a small wooden table by the window in a white-tiled Istanbul kitchen in the morning, soft daylight. Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) keeps his head lowered, not defensive. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) leans forward. S2 (Ece, warm but firm, in Turkish): \"Ben de senden sevgili olmanı istemiyorum. Bir gecede karar ver demiyorum. Ama ben buyum, sakın bir şey bekleme diyerek her şeyi önceden bitirmeni de istemiyorum.\" Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none."
+  },
+  {
+   "id": "6-11",
+   "scene": 6,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "6-10",
+   "test": false,
+   "prompt": "Hard cut to a side-profile two-shot at a small wooden table by the window in an Istanbul kitchen in the morning, soft daylight. Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) looks up at Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt). S1 (Deniz, low voice, in Turkish): \"Ne dememi istiyorsun?\" S2 (Ece, soft, in Turkish): \"Gerçek olanı. Şu anda ne hissediyorsan onu.\" Static profile two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none."
+  },
+  {
+   "id": "6-12",
+   "scene": 6,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "6-11",
+   "test": false,
+   "prompt": "Hard cut to a medium close-up of Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) at a small wooden table, turning to look out the kitchen window of an Istanbul apartment in the morning, soft daylight on his face. Outside, someone rides past on a bicycle. S1 (Deniz, low, careful voice, in Turkish): \"Seni yeniden görmek isterim. Ama sana ne olacağını söyleyemem.\" Static medium close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: morning street through the window. Music: none. SFX: a bicycle bell passing outside."
+  },
+  {
+   "id": "6-13",
+   "scene": 6,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "6-12",
+   "test": false,
+   "prompt": "Hard cut to a medium two-shot at a small wooden table by the window in a white-tiled Istanbul kitchen in the morning, soft daylight. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) and Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater). S2 (Ece, soft, in Turkish): \"Bu gerçek.\" S1 (Deniz, quiet, in Turkish): \"Ve biraz korkutucu.\" S2 (Ece, quiet, in Turkish): \"Benim için de.\" Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street, a fridge hum. Music: none."
+  },
+  {
+   "id": "6-14",
+   "scene": 6,
+   "seconds": 8,
+   "starting_frame": null,
+   "continue_from": "6-13",
+   "test": false,
+   "prompt": "Hard cut to a wide shot of a small white-tiled Istanbul kitchen in the morning, soft daylight. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) and Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater) sit in silence at the table. Suddenly the toaster on the counter pops; both startle and laugh involuntarily, the tension easing. Static wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet kitchen. Music: none. SFX: the sharp click of a toaster popping, soft laughter."
+  },
+  {
+   "id": "6-15",
+   "scene": 6,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "6-14",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) at a small wooden table in an Istanbul kitchen in the morning, soft daylight, still smiling a little. S2 (Ece, warm, steady voice, in Turkish): \"Bir daha görüşürsek, birbirimizi tanımaya çalışalım. Daha fazlasına söz vermeden.\" Off-camera, S1 (Deniz, in Turkish): \"Olur.\" Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none."
+  },
+  {
+   "id": "6-16",
+   "scene": 6,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "6-15",
+   "test": false,
+   "prompt": "Hard cut to a side-profile two-shot at a small wooden table by the window in an Istanbul kitchen in the morning, soft daylight. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) raises an eyebrow at Deniz (Turkish man, early 30s, slightly messy short dark wavy hair, light stubble, rumpled grey crewneck sweater). S2 (Ece, dry, in Turkish): \"Olur bir söz değil.\" S1 (Deniz, calm, in Turkish): \"Değil. Ama bir cevap.\" Ece weighs the answer and nods slightly. Static profile two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet morning street. Music: none."
+  },
+  {
+   "id": "7-01",
+   "scene": 7,
+   "seconds": 10,
+   "starting_frame": "antre.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "The narrow entrance hall of Ece's Istanbul apartment in the morning: a coat rack, a shoe mat, a wooden front door, soft daylight from the living room. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) has his shoes on. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) stands by the door. Between them, last night's closeness and a new morning distance. S1 (Deniz, calm low voice, in Turkish): \"Kahve için teşekkür ederim.\" S2 (Ece, raising an eyebrow, in Turkish): \"Kahve için mi?\" Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet apartment, distant street. Music: none."
+  },
+  {
+   "id": "7-02",
+   "scene": 7,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "7-01",
+   "test": false,
+   "prompt": "Hard cut to an over-the-shoulder shot from behind Ece toward Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) in the narrow entrance hall of an Istanbul apartment in the morning, coat rack, wooden front door, soft daylight. S1 (Deniz, quiet, sincere, in Turkish): \"Kahve ve dürüst konuşma için.\" S2 (Ece, warm, in Turkish): \"Ben de teşekkür ederim.\" S1 (Deniz, in Turkish): \"Neye?\" Static over-the-shoulder medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: quiet apartment. Music: none."
+  },
+  {
+   "id": "7-03",
+   "scene": 7,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "7-02",
+   "test": false,
+   "prompt": "Hard cut to a close-up of Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) in the narrow entrance hall of an Istanbul apartment in the morning, soft daylight. S2 (Ece, soft, clear voice, in Turkish): \"Gitmeden önce gerçekten burada olduğun için.\" She holds his gaze, then reaches for the door handle and opens the wooden front door. Static close-up, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: quiet apartment, then the stairwell echo as the door opens. Music: none. SFX: door latch."
+  },
+  {
+   "id": "7-04",
+   "scene": 7,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "7-03",
+   "test": false,
+   "prompt": "Hard cut to a medium two-shot at the open wooden front door of an Istanbul apartment in the morning, the stairwell landing visible behind, soft daylight. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) does not look away from Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt). S1 (Deniz, low voice, in Turkish): \"Görüşürüz, Ece.\" S2 (Ece, soft, in Turkish): \"Görüşürüz, Deniz.\" Deniz steps out onto the landing. Static medium two-shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: stairwell echo, distant street. Music: none. SFX: his footsteps on the landing."
+  },
+  {
+   "id": "7-05",
+   "scene": 7,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "7-04",
+   "test": false,
+   "prompt": "Hard cut to a medium shot inside the narrow entrance hall of an Istanbul apartment in the morning, coat rack, soft daylight. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) closes the wooden front door but does not lock it. She leans her back against the door for a moment; her face shows neither clear happiness nor regret. Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: a quiet apartment, faint footsteps fading in the stairwell. Music: none. SFX: the door clicking shut."
+  },
+  {
+   "id": "8-01",
+   "scene": 8,
+   "seconds": 12,
+   "starting_frame": "sahanlik.png",
+   "continue_from": null,
+   "test": false,
+   "prompt": "The stairwell landing of an old Istanbul apartment building in the morning: worn mosaic floor, an old elevator with a metal door, daylight from a stairwell window. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) waits for the elevator. He takes out his phone and starts typing a message, stops, deletes it, then types again and presses send. The phone screen is seen from the side, only its glow on his face. Static medium shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: the elevator motor humming somewhere above, stairwell echo. Music: none. SFX: soft phone keyboard taps, a send whoosh."
+  },
+  {
+   "id": "8-02",
+   "scene": 8,
+   "seconds": 10,
+   "starting_frame": null,
+   "continue_from": "7-05",
+   "test": false,
+   "prompt": "Hard cut to a medium shot inside the narrow entrance hall of an Istanbul apartment in the morning, coat rack, soft daylight. Ece (Turkish woman, early 30s, chestnut hair in a loose bun, small silver hoop earrings, oversized cream cardigan over a white T-shirt) hears her phone vibrate on a small hall table. She picks it up and reads the message, the screen turned away from the camera. She thinks for a moment, then smiles, but does not reply, and sets the phone down. Static medium shot, eye-level, shallow depth of field. Naturalistic indie film look, 35mm grain. Soundscape: a quiet apartment, distant street. Music: none. SFX: a phone buzzing on wood."
+  },
+  {
+   "id": "8-03",
+   "scene": 8,
+   "seconds": 12,
+   "starting_frame": null,
+   "continue_from": "8-01",
+   "test": false,
+   "prompt": "Hard cut to a wide shot of the stairwell landing of an old Istanbul apartment building in the morning, worn mosaic floor, daylight from a stairwell window. The old elevator arrives and its metal doors open. Deniz (Turkish man, early 30s, short dark wavy hair, light stubble, charcoal wool overcoat over a grey crewneck sweater) steps inside and turns around. Before the doors close, he glances at his phone; no reply. The doors slide shut on him. Static wide shot, eye-level. Naturalistic indie film look, 35mm grain. Soundscape: stairwell echo, the elevator hum. Music: in the final seconds, a single very soft solo piano phrase begins. SFX: elevator bell, metal doors closing."
+  }
+ ]
+}

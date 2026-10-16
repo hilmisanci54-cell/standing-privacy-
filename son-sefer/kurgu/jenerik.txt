@@ -1,0 +1,11 @@
+# Jenerik. İlk satır filmin adıdır. Boş satır = boşluk. # ile başlayan satırlar yok sayılır.
+# Değiştirdikten sonra kartları yeniden çizin:  node kartlar.mjs
+Son Sefer
+
+Deniz · Ece
+
+Yazan ve yöneten
+Hilmi
+
+Görüntü ve ses
+FastH3 · Reactor

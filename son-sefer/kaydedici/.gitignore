@@ -1,0 +1,6 @@
+.env
+clips/*
+!clips/.gitkeep
+frames/*
+!frames/.gitkeep
+node_modules/
